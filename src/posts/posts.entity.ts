@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('post')
 export class PostEntity {
@@ -49,4 +49,9 @@ export class PostEntity {
 
   @Column({ default: 0 })
   selected: number;
+
+  @BeforeUpdate()
+  updated() {
+    this.title = 'anay';
+  }
 }
