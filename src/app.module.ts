@@ -11,12 +11,12 @@ import { DatabaseModule } from './database/database.module';
 @Module({
   imports: [
     ConfigModule.forRoot(configModuleConfig),
-    DatabaseModule,
     UsersModule,
     PostsModule,
     CommentsModule,
     BoardsModule,
     NotificationsModule,
+    DatabaseModule,
   ],
   controllers: [],
   providers: [],
