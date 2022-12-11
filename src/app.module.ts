@@ -1,19 +1,24 @@
 import { Module } from '@nestjs/common';
-import { BoardsController } from './boards/boards.controller';
-import { UsersController } from './users/users.controller';
-import { PostsController } from './posts/posts.controller';
-import { CommentsController } from './comments/comments.controller';
-import { NotificationsController } from './notifications/notifications.controller';
+import { ConfigModule } from '@nestjs/config';
+import { configModuleConfig } from './configs/configModule.config';
+import { UsersModule } from './users/users.module';
+import { PostsModule } from './posts/posts.module';
+import { CommentsModule } from './comments/comments.module';
+import { BoardsModule } from './boards/boards.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [],
-  controllers: [
-    UsersController,
-    BoardsController,
-    PostsController,
-    CommentsController,
-    NotificationsController,
+  imports: [
+    ConfigModule.forRoot(configModuleConfig),
+    DatabaseModule,
+    UsersModule,
+    PostsModule,
+    CommentsModule,
+    BoardsModule,
+    NotificationsModule,
   ],
+  controllers: [],
   providers: [],
 })
 export class AppModule {}
