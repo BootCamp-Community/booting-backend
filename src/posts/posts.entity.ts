@@ -1,6 +1,13 @@
-import { BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
-@Entity('post')
+@Entity('POSTS')
 export class PostEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -29,14 +36,23 @@ export class PostEntity {
   @Column({ default: 0 })
   deleted: number;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: number;
+  @CreateDateColumn({
+    type: 'timestamptz',
+    nullable: false,
+  })
+  createdAt: Date;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  updatedAt: number;
+  @UpdateDateColumn({
+    type: 'timestamptz',
+    nullable: false,
+  })
+  updatedAt: Date;
 
-  @Column({ type: 'timestamp', nullable: true })
-  deletedAt: number;
+  @DeleteDateColumn({
+    type: 'timestamptz',
+    nullable: true,
+  })
+  deletedAt: Date;
 
   @Column({ default: 0 })
   like: number;
@@ -49,9 +65,4 @@ export class PostEntity {
 
   @Column({ default: 0 })
   selected: number;
-
-  @BeforeUpdate()
-  updated() {
-    this.title = 'anay';
-  }
 }

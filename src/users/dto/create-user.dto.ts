@@ -1,10 +1,16 @@
 export class CreateUserDto {
+  // OAuth2.0 아이디 종류
+  readonly nid: number;
+  readonly kid: number;
+  readonly aid: number;
+  readonly gid: number;
+
   readonly name: string;
   readonly email: string;
   readonly password: string;
   readonly nickname: string;
   readonly level: number;
   readonly photo: string;
-
-  // TODO: OAuth2.0 관련 필드 설정할 것.
+  readonly phone: number;
+  readonly age: number;
 }

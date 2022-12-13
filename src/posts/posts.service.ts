@@ -34,7 +34,7 @@ export class PostsService {
   }
 
   async update(id: number, updatePostDto: UpdatePostDto) {
-    const posts = await this.postRepository.findOneBy(id);
+    const posts = await this.postRepository.findOneBy({ id });
 
     if (!posts) {
       throw new HttpException(
@@ -43,12 +43,8 @@ export class PostsService {
       );
     }
 
-    console.log('id.id>>');
-
-    return this.postRepository.save({
-      id,
+    return this.postRepository.update(id, {
       ...updatePostDto,
-      updatedAt: Date.now(),
     });
   }
 }

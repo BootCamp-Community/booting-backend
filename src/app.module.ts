@@ -7,6 +7,7 @@ import { CommentsModule } from './comments/comments.module';
 import { BoardsModule } from './boards/boards.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { DatabaseModule } from './database/database.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { DatabaseModule } from './database/database.module';
     BoardsModule,
     NotificationsModule,
     DatabaseModule,
+    ReportsModule,
   ],
   controllers: [],
   providers: [],
