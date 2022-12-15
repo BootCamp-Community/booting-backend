@@ -11,21 +11,29 @@ export class NotificationEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
+  @Column('int', { name: 'user_id', nullable: false })
   userId: number;
 
-  @Column({ nullable: false, default: 0 })
+  @Column('int', { name: 'is_read', nullable: false, default: 0 })
   isRead: number;
 
-  @Column({ nullable: false })
+  @Column('varchar', { name: 'message', length: 255, nullable: false })
   message: string;
 
-  @Column({ nullable: false })
+  @Column('int', { name: 'is_push', nullable: false })
   isPush: number;
 
-  @CreateDateColumn({ type: 'timestamptz', nullable: false })
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamptz',
+    nullable: false,
+  })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamptz', nullable: false })
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamptz',
+    nullable: false,
+  })
   updatedAt: Date;
 }

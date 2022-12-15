@@ -11,28 +11,30 @@ export class ReportEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
+  @Column('int', { name: 'post_id', nullable: false })
   postId: number;
 
-  @Column({ nullable: false })
+  @Column('int', { name: 'reporter_id', nullable: false })
   reporterId: number;
 
-  @Column({ nullable: false })
+  @Column('varchar', { name: 'reason', length: 255, nullable: false })
   reason: string;
 
-  @Column({ nullable: false, default: 0 })
+  @Column('int', { name: 'is_execute', nullable: false, default: 0 })
   isExecute: number;
 
-  @Column({ nullable: true })
+  @Column('varchar', { name: 'executor', length: 255, nullable: true })
   executor: string;
 
   @CreateDateColumn({
+    name: 'created_at',
     type: 'timestamptz',
     nullable: false,
   })
   createdAt: Date;
 
   @UpdateDateColumn({
+    name: 'updated_at',
     type: 'timestamptz',
     nullable: false,
   })

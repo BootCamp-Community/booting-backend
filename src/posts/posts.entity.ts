@@ -12,57 +12,60 @@ export class PostEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
+  @Column('int', { name: 'board_id', nullable: false })
   boardId: number;
 
-  @Column({ nullable: true })
+  @Column('varchar', { name: 'hashtags', length: 100, nullable: true })
   hashtags: string;
 
-  @Column({ nullable: false })
+  @Column('varchar', { name: 'hashtags', length: 100, nullable: false })
   title: string;
 
-  @Column({ nullable: true })
+  @Column('text', { name: 'content', nullable: true })
   content: string;
 
-  @Column({ default: 0 })
+  @Column('int', { name: 'view_cnt', nullable: true, default: 0 })
   viewCnt: number;
 
-  @Column({ nullable: false })
+  @Column('varchar', { name: 'author', length: 30, nullable: false })
   author: string;
 
-  @Column({ nullable: false })
+  @Column('varchar', { name: 'author_type', length: 30, nullable: false })
   authorType: string;
 
-  @Column({ default: 0 })
+  @Column('int', { name: 'deleted', nullable: true, default: 0 })
   deleted: number;
 
   @CreateDateColumn({
+    name: 'created_at',
     type: 'timestamptz',
     nullable: false,
   })
   createdAt: Date;
 
   @UpdateDateColumn({
+    name: 'updated_at',
     type: 'timestamptz',
     nullable: false,
   })
   updatedAt: Date;
 
   @DeleteDateColumn({
+    name: 'deleted_at',
     type: 'timestamptz',
     nullable: true,
   })
   deletedAt: Date;
 
-  @Column({ default: 0 })
+  @Column('int', { name: 'like', nullable: false, default: 0 })
   like: number;
 
-  @Column({ default: 0 })
+  @Column('int', { name: 'dislike', nullable: false, default: 0 })
   dislike: number;
 
-  @Column({ default: 0 })
+  @Column('int', { name: 'share_cnt', nullable: false, default: 0 })
   shareCnt: number;
 
-  @Column({ default: 0 })
+  @Column('int', { name: 'selected', nullable: false, default: 0 })
   selected: number;
 }
