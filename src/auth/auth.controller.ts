@@ -27,10 +27,6 @@ export class AuthController {
         },
       });
 
-      if (!kakao.id) {
-        throw new BadRequestException('카카오 로그인에 실패하였습니다.');
-      }
-
       const jwt = await this.authService.login({
         category: 'kakao',
         loginDto: kakao,
@@ -48,8 +44,25 @@ export class AuthController {
   @Post('/naver-login')
   async naverLogin(@Body() body: any, @Response() res): Promise<any> {
     try {
-      // naver login
+      const { code }: { code: string } = body;
+      if (!code) {
+        throw new BadRequestException('요청 오류 입니다.');
+      }
+
+      const naver = await this.authService.oAuthLogin({
+        category: 'naver',
+        naverLoginDto: {
+          code,
+        },
+      });
+
+      const jwt = await this.authService.login({
+        category: 'naver',
+        loginDto: naver,
+      });
+
       res.send({
+        access_token: jwt.accessToken,
         message: 'success',
       });
     } catch (error) {

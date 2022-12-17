@@ -1,5 +1,6 @@
 import {
   Column,
+  Index,
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
@@ -8,23 +9,49 @@ import {
 
 @Entity('USERS')
 export class UserEntity {
+  @Index()
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('varchar', { name: 'nid', length: 30, nullable: true, default: null })
+  @Index()
+  @Column('varchar', {
+    name: 'nid',
+    length: 255,
+    nullable: true,
+    default: null,
+  })
   nid: string;
 
-  @Column('varchar', { name: 'kid', length: 30, nullable: true, default: null })
+  @Index()
+  @Column('varchar', {
+    name: 'kid',
+    length: 255,
+    nullable: true,
+    default: null,
+  })
   kid: string;
 
-  @Column('varchar', { name: 'aid', length: 30, nullable: true, default: null })
+  @Index()
+  @Column('varchar', {
+    name: 'aid',
+    length: 255,
+    nullable: true,
+    default: null,
+  })
   aid: string;
 
   // google
-  @Column('varchar', { name: 'gid', length: 30, nullable: true, default: null })
+  @Index()
+  @Column('varchar', {
+    name: 'gid',
+    length: 255,
+    nullable: true,
+    default: null,
+  })
   gid: string;
 
   // github
+  @Index()
   @Column('varchar', {
     name: 'ggid',
     length: 30,
