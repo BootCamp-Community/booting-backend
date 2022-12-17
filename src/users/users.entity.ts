@@ -11,17 +11,27 @@ export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('varchar', { name: 'nid', length: 30, nullable: true })
+  @Column('varchar', { name: 'nid', length: 30, nullable: true, default: null })
   nid: string;
 
-  @Column('varchar', { name: 'kid', length: 30, nullable: true })
+  @Column('varchar', { name: 'kid', length: 30, nullable: true, default: null })
   kid: string;
 
-  @Column('varchar', { name: 'aid', length: 30, nullable: true })
+  @Column('varchar', { name: 'aid', length: 30, nullable: true, default: null })
   aid: string;
 
-  @Column('varchar', { name: 'gid', length: 30, nullable: true })
+  // google
+  @Column('varchar', { name: 'gid', length: 30, nullable: true, default: null })
   gid: string;
+
+  // github
+  @Column('varchar', {
+    name: 'ggid',
+    length: 30,
+    nullable: true,
+    default: null,
+  })
+  ggid: string;
 
   @Column('varchar', { name: 'name', length: 30, nullable: false })
   name: string;
@@ -32,16 +42,31 @@ export class UserEntity {
   @Column('varchar', { name: 'nickname', length: 50, nullable: false })
   nickname: string;
 
-  @Column('varchar', { name: 'auth', length: 50, nullable: false })
+  @Column('varchar', {
+    name: 'auth',
+    length: 50,
+    nullable: true,
+    default: null,
+  })
   auth: string;
 
-  @Column('varchar', { name: 'photo', length: 255, nullable: true })
+  @Column('varchar', {
+    name: 'photo',
+    length: 255,
+    nullable: true,
+    default: null,
+  })
   photo: string;
 
-  @Column('varchar', { name: 'phone', length: 255, nullable: false })
+  @Column('varchar', {
+    name: 'phone',
+    length: 255,
+    nullable: true,
+    default: null,
+  })
   phone: string;
 
-  @Column('varchar', { name: 'age', length: 10, nullable: true })
+  @Column('varchar', { name: 'age', length: 10, nullable: true, default: null })
   age: string;
 
   @CreateDateColumn({

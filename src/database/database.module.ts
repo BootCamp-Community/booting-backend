@@ -4,6 +4,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    /**
+     * .env를 읽어오는 작업은 비동기적이므로
+     * imports 작업을 비동기로 처리한다.
+     */
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -18,6 +22,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         entities: ['dist/**/*.entity.{ts, js}'],
         autoLoadEntities: true,
         synchronize: true,
+        logging: true,
       }),
     }),
   ],
