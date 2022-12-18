@@ -1,9 +1,22 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import * as expressBasicAuth from 'express-basic-auth';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Swagger 접근 시 아이디/패스워드 설정
+  app.use(
+    ['/api-docs'],
+    expressBasicAuth({
+      users: {
+        [process.env.SWAGGER_USER]: process.env.SWAGGER_PASSWORD,
+      },
+      challenge: true,
+    }),
+  );
+
   app.enableCors({
     origin: ['http://localhost:3000'],
     credentials: true,
