@@ -3,9 +3,13 @@ import {
   Body,
   Controller,
   Post,
+  Get,
   Response,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { JwtAuthGuard as AuthGuard } from './jwt/jwt.guard';
 
 @Controller('auth')
 export class AuthController {

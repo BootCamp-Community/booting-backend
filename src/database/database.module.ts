@@ -22,7 +22,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         entities: ['dist/**/*.entity.{ts, js}'],
         autoLoadEntities: true,
         synchronize: true,
-        logging: true,
+        // logging: true,
       }),
     }),
   ],

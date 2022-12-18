@@ -13,7 +13,7 @@ import { GithubLoginDto } from './dto/github-login-dto';
 import { GoogleLoginDto } from './dto/google-login-dto';
 import { KakaoLoginDto } from './dto/kakao-login-dto';
 import { NaverLoginDto } from './dto/naver-login-dto';
-import { Payload } from './security/payload.interface';
+import { Payload } from './jwt/jwt.payload';
 
 @Injectable()
 export class AuthService {
@@ -229,5 +229,11 @@ export class AuthService {
     }
 
     throw new UnauthorizedException('로그인에 실패하였습니다.');
+  }
+
+  async tokenValidateUser(payload: Payload): Promise<UserEntity | undefined> {
+    return await this.usersService.findByFields({
+      where: { id: payload.id },
+    });
   }
 }
