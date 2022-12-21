@@ -32,3 +32,11 @@ jobs:
         run: |
           docker build -f dockerfile -t $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG .
           docker push $REGISTRY/$REGISTRY_ALIAS/$REPOSITORY:$IMAGE_TAG
+
+      - name: Force new AWS ECS deployment
+        env:
+          AWS_REGION: ap-northeast-2
+          AWS_ECS_CLUSTER: btcp
+          AWS_ECS_SERVICE: bt
+        run: |
+          aws ecs update-service --region $AWS_REGION --cluster $AWS_ECS_CLUSTER --service $AWS_ECS_SERVICE --force-new-deployment
