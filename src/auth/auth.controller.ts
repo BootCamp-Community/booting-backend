@@ -9,13 +9,12 @@ import {
   Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard as AuthGuard } from './jwt/jwt.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Post('/kakao-login')
+  @Post('/login/kakao')
   async kakaoLogin(@Body() body: any, @Response() res): Promise<any> {
     try {
       const { code, domain }: { code: string; domain: string } = body;
@@ -24,7 +23,7 @@ export class AuthController {
       }
 
       const kakao = await this.authService.oAuthLogin({
-        category: 'kakao',
+        provider: 'kakao',
         kakaoLoginDto: {
           code,
           domain,
@@ -32,7 +31,7 @@ export class AuthController {
       });
 
       const jwt = await this.authService.login({
-        category: 'kakao',
+        provider: 'kakao',
         loginDto: kakao,
       });
 
@@ -45,7 +44,7 @@ export class AuthController {
     }
   }
 
-  @Post('/naver-login')
+  @Post('/login/naver')
   async naverLogin(@Body() body: any, @Response() res): Promise<any> {
     try {
       const { code }: { code: string } = body;
@@ -54,14 +53,14 @@ export class AuthController {
       }
 
       const naver = await this.authService.oAuthLogin({
-        category: 'naver',
+        provider: 'naver',
         naverLoginDto: {
           code,
         },
       });
 
       const jwt = await this.authService.login({
-        category: 'naver',
+        provider: 'naver',
         loginDto: naver,
       });
 
@@ -74,34 +73,22 @@ export class AuthController {
     }
   }
 
-  @Post('/google-login')
-  async googleLogin(@Body() body: any, @Response() res): Promise<any> {
-    try {
-      // google login
-      res.send({
-        message: 'success',
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  @Post('/apple-login')
-  async appleLogin(@Body() body: any, @Response() res): Promise<any> {
-    try {
-      // apple login
-      res.send({
-        message: 'success',
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  @Post('/github-login')
+  @Post('/login/github')
   async githubLogin(@Body() body: any, @Response() res): Promise<any> {
     try {
       // github login
+      res.send({
+        message: 'success',
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  @Post('/login/apple')
+  async appleLogin(@Body() body: any, @Response() res): Promise<any> {
+    try {
+      // apple login
       res.send({
         message: 'success',
       });

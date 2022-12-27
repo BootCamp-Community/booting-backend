@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('USERS')
+@Entity('USER')
 export class UserEntity {
   @Index()
   @PrimaryGeneratedColumn()
@@ -15,50 +15,17 @@ export class UserEntity {
 
   @Index()
   @Column('varchar', {
-    name: 'nid',
+    name: 'oauth_id',
     length: 255,
-    nullable: true,
-    default: null,
+    nullable: false,
   })
-  nid: string;
+  oAuthId: string;
 
-  @Index()
-  @Column('varchar', {
-    name: 'kid',
-    length: 255,
-    nullable: true,
-    default: null,
-  })
-  kid: string;
+  @Column('varchar', { name: 'provider', length: 30, nullable: false })
+  provider: string;
 
-  @Index()
-  @Column('varchar', {
-    name: 'aid',
-    length: 255,
-    nullable: true,
-    default: null,
-  })
-  aid: string;
-
-  // google
-  @Index()
-  @Column('varchar', {
-    name: 'gid',
-    length: 255,
-    nullable: true,
-    default: null,
-  })
-  gid: string;
-
-  // github
-  @Index()
-  @Column('varchar', {
-    name: 'ggid',
-    length: 30,
-    nullable: true,
-    default: null,
-  })
-  ggid: string;
+  @Column('varchar', { name: 'refresh_token', length: 255, nullable: true })
+  refreshToken: string;
 
   @Column('varchar', { name: 'name', length: 30, nullable: false })
   name: string;
@@ -68,14 +35,6 @@ export class UserEntity {
 
   @Column('varchar', { name: 'nickname', length: 50, nullable: false })
   nickname: string;
-
-  @Column('varchar', {
-    name: 'auth',
-    length: 50,
-    nullable: true,
-    default: null,
-  })
-  auth: string;
 
   @Column('varchar', {
     name: 'photo',
@@ -97,16 +56,16 @@ export class UserEntity {
   age: string;
 
   @CreateDateColumn({
-    name: 'joined_at',
+    name: 'created_at',
     type: 'timestamptz',
     nullable: false,
   })
-  joinedAt: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({
-    name: 'last_login',
+    name: 'last_login_at',
     type: 'timestamptz',
     nullable: false,
   })
-  lastLogin: Date;
+  lastLoginAt: Date;
 }

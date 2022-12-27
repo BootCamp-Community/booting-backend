@@ -111,17 +111,16 @@ export class AuthService {
   }
 
   async oAuthLogin(params: {
-    category: string;
+    provider: string;
     kakaoLoginDto?: KakaoLoginDto;
     naverLoginDto?: NaverLoginDto;
-    googleLoginDto?: GoogleLoginDto;
     appleLoginDto?: AppleLoginDto;
     githubLoginDto?: GithubLoginDto;
   }): Promise<any> {
-    const { category } = params;
+    const { provider } = params;
 
     let loginInfo;
-    switch (category) {
+    switch (provider) {
       case 'kakao': {
         const { code, domain } = params.kakaoLoginDto;
 
@@ -146,7 +145,6 @@ export class AuthService {
         }
         break;
       }
-      case 'google':
       case 'apple':
       case 'github':
       default:
@@ -156,28 +154,26 @@ export class AuthService {
     return loginInfo;
   }
 
-  async login(params: { category: string; loginDto: any }): Promise<any> {
-    const { category, loginDto } = params;
+  async login(params: { provider: string; loginDto: any }): Promise<any> {
+    const { provider, loginDto } = params;
 
-    switch (category) {
+    switch (provider) {
       case 'kakao': {
-        const { id: kid, kakao_account: kakao } = loginDto;
+        const { id: oAuthId, kakao_account: kakao } = loginDto;
         let findUser: UserEntity = await this.usersService.findByFields({
-          where: { kid },
+          where: { oAuthId },
         });
 
         if (!findUser) {
           const newUser = new UserEntity();
-          newUser.kid = kid;
+          newUser.oAuthId = oAuthId;
+          newUser.provider = 'kakao';
           newUser.name = kakao.profile?.nickname;
           newUser.nickname = kakao.profile?.nickname;
           newUser.email = kakao.has_email ? kakao.email : null;
           newUser.age = kakao.has_age_range ? kakao.age_range : null;
 
-          findUser = await this.usersService.register({
-            category: 'kakao',
-            newUser,
-          });
+          findUser = await this.usersService.register(newUser);
         }
 
         const payload: Payload = {
@@ -191,25 +187,23 @@ export class AuthService {
       }
       case 'naver': {
         const { response: naver } = loginDto;
-        const nid = naver.id;
+        const oAuthId = naver.id;
 
         let findUser: UserEntity = await this.usersService.findByFields({
-          where: { nid },
+          where: { oAuthId },
         });
 
         if (!findUser) {
           const newUser = new UserEntity();
-          newUser.nid = nid;
+          newUser.oAuthId = oAuthId;
+          newUser.provider = 'naver';
           newUser.name = naver.name ? naver.name : naver.nickname;
           newUser.nickname = naver.nickname;
           newUser.email = naver.email;
           newUser.age = naver.age ? naver.age : null;
           newUser.phone = naver.mobile ? naver.mobile : null;
 
-          findUser = await this.usersService.register({
-            category: 'naver',
-            newUser,
-          });
+          findUser = await this.usersService.register(newUser);
         }
 
         const payload: Payload = {
@@ -221,7 +215,6 @@ export class AuthService {
           accessToken: this.jwtService.sign(payload),
         };
       }
-      case 'google':
       case 'apple':
       case 'github':
       default:
