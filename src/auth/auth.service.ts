@@ -8,11 +8,12 @@ import axios from 'axios';
 import * as qs from 'qs';
 import { UserEntity } from 'src/users/users.entity';
 import { UsersService } from 'src/users/users.service';
-import { AppleLoginDto } from './dto/apple-login-dto';
-import { GithubLoginDto } from './dto/github-login-dto';
-import { GoogleLoginDto } from './dto/google-login-dto';
-import { KakaoLoginDto } from './dto/kakao-login-dto';
-import { NaverLoginDto } from './dto/naver-login-dto';
+import {
+  AppleLoginDto,
+  GithubLoginDto,
+  KakaoLoginDto,
+  NaverLoginDto,
+} from './dto/login-dto';
 import { Payload } from './jwt/jwt.payload';
 
 @Injectable()
@@ -22,7 +23,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async loginKakao(params: { code: string; domain: string }): Promise<any> {
+  async loginKakao(params: KakaoLoginDto): Promise<any> {
     const { code, domain } = params;
 
     const kakaoRestApiKey = process.env.KAKAO_LOGIN_REST_API_KEY;
@@ -40,36 +41,32 @@ export class AuthService {
       'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
     };
 
-    try {
-      const response = await axios({
-        method: 'POST',
-        url: kakaoTokenUrl,
-        timeout: 30000,
-        headers,
-        data: qs.stringify(body),
-      });
+    const response = await axios({
+      method: 'POST',
+      url: kakaoTokenUrl,
+      timeout: 30000,
+      headers,
+      data: qs.stringify(body),
+    });
 
-      if (response.status !== 200) {
-        throw new UnauthorizedException('Login 실패');
-      }
-
-      const userInfoResponse = await axios({
-        method: 'GET',
-        url: kakaoUserInfoUrl,
-        timeout: 30000,
-        headers: {
-          ...headers,
-          Authorization: `Bearer ${response.data.access_token}`,
-        },
-      });
-
-      return userInfoResponse.data;
-    } catch (error) {
-      console.error(error);
+    if (response.status !== 200) {
+      throw new UnauthorizedException('Login 실패');
     }
+
+    const userInfoResponse = await axios({
+      method: 'GET',
+      url: kakaoUserInfoUrl,
+      timeout: 30000,
+      headers: {
+        ...headers,
+        Authorization: `Bearer ${response.data.access_token}`,
+      },
+    });
+
+    return userInfoResponse.data;
   }
 
-  async loginNaver(params: { code: string }): Promise<any> {
+  async loginNaver(params: NaverLoginDto): Promise<any> {
     const { code } = params;
 
     const clientId = process.env.NAVER_CLIENT_ID;
@@ -82,32 +79,28 @@ export class AuthService {
       'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
     };
 
-    try {
-      const response = await axios({
-        method: 'POST',
-        url: naverTokenUrl,
-        timeout: 30000,
-        headers,
-      });
+    const response = await axios({
+      method: 'POST',
+      url: naverTokenUrl,
+      timeout: 30000,
+      headers,
+    });
 
-      if (response.status !== 200) {
-        throw new UnauthorizedException('Login 실패');
-      }
-
-      const userInfoResponse = await axios({
-        method: 'GET',
-        url: naverUserInfoUrl,
-        timeout: 30000,
-        headers: {
-          ...headers,
-          Authorization: `Bearer ${response.data.access_token}`,
-        },
-      });
-
-      return userInfoResponse.data;
-    } catch (error) {
-      console.error(error);
+    if (response.status !== 200 || response.data.error) {
+      throw new UnauthorizedException('Login 실패');
     }
+
+    const userInfoResponse = await axios({
+      method: 'GET',
+      url: naverUserInfoUrl,
+      timeout: 30000,
+      headers: {
+        ...headers,
+        Authorization: `Bearer ${response.data.access_token}`,
+      },
+    });
+
+    return userInfoResponse.data;
   }
 
   async oAuthLogin(params: {
@@ -128,7 +121,7 @@ export class AuthService {
 
         loginInfo = await this.loginKakao({ code, domain });
 
-        if (!loginInfo.id) {
+        if (!loginInfo || !loginInfo.id) {
           throw new BadRequestException('카카오 로그인에 실패하였습니다.');
         }
         break;
@@ -140,7 +133,7 @@ export class AuthService {
 
         loginInfo = await this.loginNaver({ code });
 
-        if (!loginInfo.response.id) {
+        if (!loginInfo || !loginInfo.response?.id) {
           throw new BadRequestException('네이버 로그인에 실패하였습니다.');
         }
         break;

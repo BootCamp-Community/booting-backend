@@ -6,13 +6,16 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('NOTIFICATIONS')
+@Entity('NOTIFICATION')
 export class NotificationEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('int', { name: 'user_id', nullable: false })
-  userId: number;
+  @Column('int', { name: 'receiver_id', nullable: false })
+  receiverId: number;
+
+  @Column('int', { name: 'sender_id', nullable: false })
+  senderId: number;
 
   @Column('int', { name: 'is_read', nullable: false, default: 0 })
   isRead: number;
@@ -31,9 +34,9 @@ export class NotificationEntity {
   createdAt: Date;
 
   @UpdateDateColumn({
-    name: 'updated_at',
+    name: 'read_at',
     type: 'timestamptz',
     nullable: false,
   })
-  updatedAt: Date;
+  readAt: Date;
 }

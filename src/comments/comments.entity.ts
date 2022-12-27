@@ -14,8 +14,8 @@ export class CommentEntity {
   @Column('int', { name: 'post_id', nullable: false })
   postId: number;
 
-  @Column('int', { name: 'user_id', nullable: false })
-  userId: number;
+  @Column('int', { name: 'author', nullable: false })
+  author: number;
 
   @Column('int', { name: 'parent_id', nullable: false })
   parentId: number;
@@ -23,8 +23,14 @@ export class CommentEntity {
   @Column('int', { name: 'level', nullable: false })
   level: number;
 
-  @Column('varchar', { name: 'content', nullable: true })
+  @Column('varchar', { name: 'content', length: 255, nullable: true })
   content: string;
+
+  @Column('int', { name: 'like', nullable: false, default: 0 })
+  like: number;
+
+  @Column('int', { name: 'dislike', nullable: false, default: 0 })
+  dislike: number;
 
   @CreateDateColumn({ nullable: false, type: 'timestamptz' })
   createdAt: Date;

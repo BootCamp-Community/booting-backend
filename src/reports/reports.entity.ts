@@ -34,9 +34,9 @@ export class ReportEntity {
   createdAt: Date;
 
   @UpdateDateColumn({
-    name: 'updated_at',
+    name: 'executed_at',
     type: 'timestamptz',
     nullable: false,
   })
-  updatedAt: Date;
+  executedAt: Date;
 }

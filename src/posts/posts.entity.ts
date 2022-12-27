@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('POSTS')
+@Entity('POST')
 export class PostEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -21,7 +21,15 @@ export class PostEntity {
   })
   boardId: number;
 
-  @Column('varchar', { name: 'hashtags', length: 100, nullable: true })
+  @Column('int', { name: 'user_id', nullable: false })
+  @ApiProperty({
+    example: 1,
+    description: '유저 ID',
+    required: true,
+  })
+  userId: string;
+
+  @Column('varchar', { name: 'hashtags', length: 255, nullable: true })
   @ApiProperty({
     example: '해쉬태그',
     description: '해쉬태그',
@@ -45,16 +53,8 @@ export class PostEntity {
   })
   content: string;
 
-  @Column('int', { name: 'view_cnt', nullable: true, default: 0 })
-  viewCnt: number;
-
-  @Column('varchar', { name: 'author', length: 30, nullable: false })
-  @ApiProperty({
-    example: 1,
-    description: '유저 ID',
-    required: true,
-  })
-  author: string;
+  @Column('int', { name: 'view_count', nullable: true, default: 0 })
+  viewCount: number;
 
   @Column('varchar', { name: 'author_type', length: 30, nullable: false })
   @ApiProperty({
@@ -64,23 +64,27 @@ export class PostEntity {
   })
   authorType: string;
 
+  @Column('varchar', { name: 'create_ip', length: 255, nullable: false })
+  @ApiProperty({
+    example: '1.2.3.4',
+    description: '글 작성 IP',
+    required: true,
+  })
+  createIp: string;
+
+  @ApiProperty({
+    example: '1',
+    description: '삭제 여부',
+    required: true,
+  })
   @Column('int', { name: 'deleted', nullable: true, default: 0 })
   deleted: number;
 
-  @CreateDateColumn({
-    name: 'created_at',
-    type: 'timestamptz',
-    nullable: false,
+  @ApiProperty({
+    example: '2022-12-27 12:55:32.679158 +00:00',
+    description: '삭제 시각',
+    required: true,
   })
-  createdAt: Date;
-
-  @UpdateDateColumn({
-    name: 'updated_at',
-    type: 'timestamptz',
-    nullable: false,
-  })
-  updatedAt: Date;
-
   @DeleteDateColumn({
     name: 'deleted_at',
     type: 'timestamptz',
@@ -88,15 +92,59 @@ export class PostEntity {
   })
   deletedAt: Date;
 
-  @Column('int', { name: 'like', nullable: false, default: 0 })
-  like: number;
+  @ApiProperty({
+    example: '2022-12-27 12:55:32.679158 +00:00',
+    description: '생성 시각',
+    required: true,
+  })
+  @CreateDateColumn({
+    name: 'created_at',
+    type: 'timestamptz',
+    nullable: false,
+  })
+  createdAt: Date;
 
-  @Column('int', { name: 'dislike', nullable: false, default: 0 })
-  dislike: number;
+  @ApiProperty({
+    example: '2022-12-27 12:55:32.679158 +00:00',
+    description: '수정 시각',
+    required: true,
+  })
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamptz',
+    nullable: false,
+  })
+  updatedAt: Date;
 
-  @Column('int', { name: 'share_cnt', nullable: false, default: 0 })
-  shareCnt: number;
+  @ApiProperty({
+    example: '0',
+    description: '공유 수',
+    required: true,
+  })
+  @Column('int', { name: 'share_count', nullable: false, default: 0 })
+  shareCount: number;
 
-  @Column('int', { name: 'selected', nullable: false, default: 0 })
-  selected: number;
+  @ApiProperty({
+    example: '0',
+    description: '채택된 답변인지 여부',
+    required: true,
+  })
+  @Column('int', { name: 'selected_answer', nullable: false, default: 0 })
+  selectedAnswer: number;
+
+  @ApiProperty({
+    example: '0',
+    description: '답글인지 여부',
+    required: true,
+  })
+  @Column('int', { name: 'is_answer', nullable: false, default: 0 })
+  isAnswer: number;
+
+  @ApiProperty({
+    example: '0',
+    description: '답변글 인경우 부모글(질문글) ID',
+    required: true,
+  })
+  @Column('int', { name: 'parent_post_id', nullable: false, default: 0 })
+  parentPostId: number;
 }
