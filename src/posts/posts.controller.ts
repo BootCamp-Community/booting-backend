@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Headers,
+  Ip,
   Param,
   Post,
   Put,
@@ -12,6 +14,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsService } from './posts.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiQuery,
@@ -55,26 +58,40 @@ export class PostsController {
     return this.postService.getPostById(id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post()
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token') //JWT 토큰 키 설정
   @ApiOperation({ summary: '게시글 작성' })
   @ApiBody({ type: CreatePostDto })
   @ApiResponse({
     status: 201,
-    description: '새로운 게시글을 작성한다.',
     type: CreatePostDto,
+    schema: {
+      example: {
+        id: '1',
+      },
+    },
   })
   @ApiResponse({
     status: 401,
     description: '게시글 작성 실패',
   })
-  async createPost(@Body() dto: CreatePostDto): Promise<void> {
+  async createPost(
+    @Body() dto: CreatePostDto,
+    @Ip() ip,
+    @Headers('authorization') header,
+  ): Promise<void> {
+    dto.createIp = ip;
+    console.log(header);
+    console.log('ip', ip);
+
     this.postService.create(dto);
     return;
   }
 
-  @UseGuards(JwtAuthGuard)
   @Put(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token') //JWT 토큰 키 설정
   @ApiOperation({ summary: '게시글 수정' })
   @ApiQuery({ type: 'id' })
   @ApiBody({ type: UpdatePostDto })
