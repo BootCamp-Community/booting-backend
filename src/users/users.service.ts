@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from './users.entity';
@@ -21,10 +21,7 @@ export class UsersService {
     });
 
     if (userFind) {
-      throw new HttpException(
-        '이미 존재하는 회원 입니다.',
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException('이미 등록된 회원 입니다.');
     }
 
     return this.save(newUser);

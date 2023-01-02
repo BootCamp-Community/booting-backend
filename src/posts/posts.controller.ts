@@ -22,6 +22,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { GetPostsDto } from './dto/get-posts.dto';
+import { PostEntity } from './posts.entity';
 
 @ApiTags('게시글')
 @Controller('posts')
@@ -76,17 +77,9 @@ export class PostsController {
     status: 401,
     description: '게시글 작성 실패',
   })
-  async createPost(
-    @Body() dto: CreatePostDto,
-    @Ip() ip,
-    @Headers('authorization') header,
-  ): Promise<void> {
-    dto.createIp = ip;
-    console.log(header);
-    console.log('ip', ip);
-
-    this.postService.create(dto);
-    return;
+  async createPost(@Body() dto: CreatePostDto, @Ip() ip): Promise<PostEntity> {
+    const created = await this.postService.create(dto, ip);
+    return created;
   }
 
   @Put(':id')
@@ -104,8 +97,8 @@ export class PostsController {
     status: 401,
     description: '게시글 작성 실패',
   })
-  async updatePost(@Param() param: any, @Body() dto: UpdatePostDto) {
+  async updatePost(@Param() param: any, @Body() dto: UpdatePostDto, @Ip() ip) {
     const { id } = param;
-    return this.postService.update(id, dto);
+    return this.postService.update(id, dto, ip);
   }
 }

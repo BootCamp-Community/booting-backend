@@ -56,13 +56,13 @@ export class PostEntity {
   @Column('int', { name: 'view_count', nullable: true, default: 0 })
   viewCount: number;
 
-  @Column('varchar', { name: 'author_type', length: 30, nullable: false })
+  @Column('varchar', { name: 'user_type', length: 30, nullable: false })
   @ApiProperty({
     example: 'nickname',
     description: '글쓴이 타입(필명 or 실명)',
     required: true,
   })
-  authorType: string;
+  userType: string;
 
   @Column('varchar', { name: 'create_ip', length: 255, nullable: false })
   @ApiProperty({
@@ -142,7 +142,7 @@ export class PostEntity {
 
   @ApiProperty({
     example: '0',
-    description: '답변글 인경우 부모글(질문글) ID',
+    description: '답변 글인경우 부모글(질문글) ID',
     required: true,
   })
   @Column('int', { name: 'parent_post_id', nullable: false, default: 0 })

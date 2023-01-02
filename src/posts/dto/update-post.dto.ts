@@ -7,7 +7,6 @@ export class UpdatePostDto extends OmitType(PostEntity, [
   'selectedAnswer',
   'isAnswer',
   'parentPostId',
-  'createIp',
   'deleted',
   'createdAt',
   'updatedAt',

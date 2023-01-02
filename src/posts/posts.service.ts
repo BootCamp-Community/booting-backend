@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreatePostDto } from './dto/create-post.dto';
 import { Repository } from 'typeorm';
@@ -20,27 +25,27 @@ export class PostsService {
     const posts = await this.postRepository.findOneBy(id);
 
     if (!posts) {
-      throw new HttpException(
-        '게시글을 찾을 수 없습니다.',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new NotFoundException('게시글을 찾을 수 없습니다.');
     }
-    console.log('posts', posts);
-    return this.postRepository.findOneBy(id);
+
+    return posts;
   }
 
-  async create(createPostDto: CreatePostDto) {
-    return this.postRepository.save(createPostDto);
+  async create(createPostDto: CreatePostDto, ip: string): Promise<PostEntity> {
+    createPostDto.createIp = ip;
+
+    const result = await this.postRepository.save(createPostDto);
+
+    return result;
   }
 
-  async update(id: number, updatePostDto: UpdatePostDto) {
+  async update(id: number, updatePostDto: UpdatePostDto, ip: string) {
+    updatePostDto.createIp = ip;
+
     const posts = await this.postRepository.findOneBy({ id });
 
     if (!posts) {
-      throw new HttpException(
-        '게시글을 찾을 수 없습니다.',
-        HttpStatus.NOT_FOUND,
-      );
+      throw new NotFoundException('게시글을 찾을 수 없습니다.');
     }
 
     return this.postRepository.update(id, {
