@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { configModuleConfig } from './configs/configModule.config';
-import { UsersModule } from './users/users.module';
-import { PostsModule } from './posts/posts.module';
-import { CommentsModule } from './comments/comments.module';
-import { BoardsModule } from './boards/boards.module';
-import { NotificationsModule } from './notifications/notifications.module';
-import { DatabaseModule } from './database/database.module';
-import { ReportsModule } from './reports/reports.module';
-import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './main/users/users.module';
+import { PostsModule } from './main/posts/posts.module';
+import { CommentsModule } from './main/comments/comments.module';
+import { BoardsModule } from './main/boards/boards.module';
+import { NotificationsModule } from './main/notifications/notifications.module';
+import { DatabaseModule } from './configs/database.module';
+import { ReportsModule } from './main/reports/reports.module';
+import { AuthModule } from './main/auth/auth.module';
 
 @Module({
   imports: [

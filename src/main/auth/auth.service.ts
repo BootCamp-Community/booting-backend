@@ -6,8 +6,8 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import axios from 'axios';
 import * as qs from 'qs';
-import { UserEntity } from 'src/users/users.entity';
-import { UsersService } from 'src/users/users.service';
+import { UserEntity } from 'src/main/users/users.entity';
+import { UsersService } from 'src/main/users/users.service';
 import {
   AppleLoginDto,
   GithubLoginDto,

@@ -3,14 +3,11 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import * as expressBasicAuth from 'express-basic-auth';
 import { HttpExceptionFilter } from './http-exepction.filter';
+import { ConfigService } from './configs/config.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  app.enableCors({
-    origin: ['http://localhost:3000'],
-    credentials: true,
-  });
+  app.enableCors(ConfigService.getCorsConfigs());
 
   // app.useGlobalPipes(
   //   new ValidationPipe({
@@ -65,4 +62,5 @@ async function bootstrap() {
 
   await app.listen(4000);
 }
+
 bootstrap();
