@@ -21,7 +21,7 @@ export class UserEntity {
   })
   oAuthId: string;
 
-  @Column('varchar', { name: 'provider', length: 30, nullable: false })
+  @Column('varchar', { name: 'provider', length: 50, nullable: false })
   provider: string;
 
   @Column('varchar', { name: 'refresh_token', length: 255, nullable: true })
