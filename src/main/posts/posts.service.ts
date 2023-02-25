@@ -1,24 +1,17 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
-import { Repository } from 'typeorm';
 import { PostEntity } from './posts.entity';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { PostRepository } from './posts.repository';
 
 @Injectable()
 export class PostsService {
-  constructor(
-    @InjectRepository(PostEntity)
-    private readonly postRepository: Repository<PostEntity>,
-  ) {}
+  constructor(private postRepository: PostRepository) {
+  }
 
   async getPosts() {
-    // const posts = await this.postRepository.findAll();
+    const posts = await this.postRepository.findAll();
+    return posts;
   }
 
   async getPostById(id: object) {

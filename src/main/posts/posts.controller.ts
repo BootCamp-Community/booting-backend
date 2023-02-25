@@ -27,7 +27,8 @@ import { PostEntity } from './posts.entity';
 @ApiTags('게시글')
 @Controller('posts')
 export class PostsController {
-  constructor(private postService: PostsService) {}
+  constructor(private postService: PostsService) {
+  }
 
   @Get()
   @ApiOperation({ summary: '게시글 전체 조회' })
@@ -60,8 +61,8 @@ export class PostsController {
   }
 
   @Post()
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('access-token') //JWT 토큰 키 설정
+  // @UseGuards(JwtAuthGuard)
+  // @ApiBearerAuth('access-token') //JWT 토큰 키 설정
   @ApiOperation({ summary: '게시글 작성' })
   @ApiBody({ type: CreatePostDto })
   @ApiResponse({

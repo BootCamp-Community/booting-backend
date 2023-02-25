@@ -11,4 +11,5 @@ export class UpdatePostDto extends OmitType(PostEntity, [
   'createdAt',
   'updatedAt',
   'deletedAt',
-] as const) {}
+] as const) {
+}

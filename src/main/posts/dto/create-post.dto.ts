@@ -1,5 +1,6 @@
 import { OmitType } from '@nestjs/swagger';
 import { PostEntity } from '../posts.entity';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreatePostDto extends OmitType(PostEntity, [
   'viewCount',
@@ -11,4 +12,23 @@ export class CreatePostDto extends OmitType(PostEntity, [
   'createdAt',
   'updatedAt',
   'deletedAt',
-] as const) {}
+] as const) {
+  @IsNumber()
+  userId;
+
+  @IsNumber()
+  boardId;
+
+  @IsString()
+  @IsOptional()
+  hashtags;
+
+  @IsString()
+  title;
+
+  @IsString()
+  content;
+
+  @IsString()
+  userType;
+}
