@@ -1,27 +1,15 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import axios from 'axios';
 import * as qs from 'qs';
 import { UserEntity } from 'src/main/users/users.entity';
 import { UsersService } from 'src/main/users/users.service';
-import {
-  AppleLoginDto,
-  GithubLoginDto,
-  KakaoLoginDto,
-  NaverLoginDto,
-} from './dto/login-dto';
+import { AppleLoginDto, GithubLoginDto, KakaoLoginDto, NaverLoginDto } from './dto/login-dto';
 import { Payload } from './jwt/jwt.payload';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private usersService: UsersService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private usersService: UsersService, private jwtService: JwtService) {}
 
   async loginKakao(params: KakaoLoginDto): Promise<any> {
     const { code, domain } = params;
@@ -127,11 +115,11 @@ export class AuthService {
         break;
       }
       case 'naver': {
-        const { code } = params.naverLoginDto;
+        const { code, domain } = params.naverLoginDto;
 
         if (!code) return;
 
-        loginInfo = await this.loginNaver({ code });
+        loginInfo = await this.loginNaver({ code, domain });
 
         if (!loginInfo || !loginInfo.response?.id) {
           throw new BadRequestException('네이버 로그인에 실패하였습니다.');

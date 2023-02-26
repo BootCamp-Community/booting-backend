@@ -18,10 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const user = await this.authService.tokenValidateUser(payload);
 
     if (!user) {
-      return done(
-        new UnauthorizedException({ message: '해당하는 회원이 없습니다' }),
-        false,
-      );
+      return done(new UnauthorizedException({ message: '해당하는 회원이 없습니다' }), false);
     }
 
     return user;

@@ -74,7 +74,8 @@ export class AuthController {
   })
   async naverLogin(@Body() body: NaverLoginDto, @Response() res): Promise<any> {
     try {
-      const { code } = body;
+      const { code, domain } = body;
+      console.log(code);
       if (!code) {
         throw new BadRequestException('Bad Request');
       }
@@ -83,6 +84,7 @@ export class AuthController {
         provider: 'naver',
         naverLoginDto: {
           code,
+          domain,
         },
       });
 
