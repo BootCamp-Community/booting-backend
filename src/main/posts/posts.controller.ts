@@ -1,34 +1,17 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Headers,
-  Ip,
-  Param,
-  Post,
-  Put,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Ip, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsService } from './posts.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiOperation,
-  ApiQuery,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetPostsDto } from './dto/get-posts.dto';
 import { PostEntity } from './posts.entity';
+import { CurrentUser } from '../../common/decorators/user.decorator';
 
 @ApiTags('게시글')
 @Controller('posts')
 export class PostsController {
-  constructor(private postService: PostsService) {
-  }
+  constructor(private postService: PostsService) {}
 
   @Get()
   @ApiOperation({ summary: '게시글 전체 조회' })
@@ -61,8 +44,8 @@ export class PostsController {
   }
 
   @Post()
-  // @UseGuards(JwtAuthGuard)
-  // @ApiBearerAuth('access-token') //JWT 토큰 키 설정
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token') //JWT 토큰 키 설정
   @ApiOperation({ summary: '게시글 작성' })
   @ApiBody({ type: CreatePostDto })
   @ApiResponse({
@@ -78,8 +61,8 @@ export class PostsController {
     status: 401,
     description: '게시글 작성 실패',
   })
-  async createPost(@Body() dto: CreatePostDto, @Ip() ip): Promise<PostEntity> {
-    const created = await this.postService.create(dto, ip);
+  async createPost(@CurrentUser() user, @Body() dto: CreatePostDto, @Ip() ip): Promise<PostEntity> {
+    const created = await this.postService.create(user, dto, ip);
     return created;
   }
 
@@ -98,8 +81,22 @@ export class PostsController {
     status: 401,
     description: '게시글 작성 실패',
   })
-  async updatePost(@Param() param: any, @Body() dto: UpdatePostDto, @Ip() ip) {
+  async updatePost(@CurrentUser() user, @Param() param: any, @Body() dto: UpdatePostDto, @Ip() ip) {
     const { id } = param;
-    return this.postService.update(id, dto, ip);
+    return this.postService.update(user, id, dto, ip);
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token') //JWT 토큰 키 설정
+  @ApiOperation({ summary: '게시글 삭제' })
+  @ApiQuery({ type: 'id' })
+  @ApiResponse({
+    status: 201,
+    description: '아이디에 해당하는 게시글을 삭제한다.',
+  })
+  async deletePost(@CurrentUser() user, @Param() param: any) {
+    const { id } = param;
+    return this.postService.delete(user, id);
   }
 }

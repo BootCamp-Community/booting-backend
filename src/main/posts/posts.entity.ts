@@ -1,12 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('POST')
 export class PostEntity {
@@ -29,13 +22,13 @@ export class PostEntity {
   })
   userId: string;
 
-  @Column('varchar', { name: 'hashtags', length: 255, nullable: true })
+  @Column({ type: 'json', name: 'hashtags', nullable: true })
   @ApiProperty({
     example: '해쉬태그',
     description: '해쉬태그',
     required: false,
   })
-  hashtags: string;
+  hashtags: string[];
 
   @Column('varchar', { name: 'title', length: 100, nullable: false })
   @ApiProperty({
@@ -65,11 +58,6 @@ export class PostEntity {
   userType: string;
 
   @Column('varchar', { name: 'create_ip', length: 255, nullable: false })
-  @ApiProperty({
-    example: '1.2.3.4',
-    description: '글 작성 IP',
-    required: true,
-  })
   createIp: string;
 
   @ApiProperty({
@@ -145,6 +133,6 @@ export class PostEntity {
     description: '답변 글인경우 부모글(질문글) ID',
     required: true,
   })
-  @Column('int', { name: 'parent_post_id', nullable: false, default: 0 })
+  @Column('int', { name: 'parent_post_id', nullable: true, default: null })
   parentPostId: number;
 }

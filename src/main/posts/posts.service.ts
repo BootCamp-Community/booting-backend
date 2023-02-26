@@ -3,11 +3,11 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { PostEntity } from './posts.entity';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostRepository } from './posts.repository';
+import { CurrentUser } from '../../common/decorators/user.decorator';
 
 @Injectable()
 export class PostsService {
-  constructor(private postRepository: PostRepository) {
-  }
+  constructor(private postRepository: PostRepository) {}
 
   async getPosts() {
     const posts = await this.postRepository.findAll();
@@ -24,18 +24,12 @@ export class PostsService {
     return posts;
   }
 
-  async create(createPostDto: CreatePostDto, ip: string): Promise<PostEntity> {
-    createPostDto.createIp = ip;
-
-    const result = await this.postRepository.save(createPostDto);
-
-    return result;
+  async create(user, createPostDto: CreatePostDto, ip: string): Promise<PostEntity> {
+    return this.postRepository.save({ ...createPostDto, createIp: ip, userId: user.id });
   }
 
-  async update(id: number, updatePostDto: UpdatePostDto, ip: string) {
-    updatePostDto.createIp = ip;
-
-    const posts = await this.postRepository.findOneBy({ id });
+  async update(user, id: number, updatePostDto: UpdatePostDto, ip: string) {
+    const posts = await this.postRepository.findOneBy({ id, userId: user.id });
 
     if (!posts) {
       throw new NotFoundException('게시글을 찾을 수 없습니다.');
@@ -43,6 +37,17 @@ export class PostsService {
 
     return this.postRepository.update(id, {
       ...updatePostDto,
+      createIp: ip,
     });
+  }
+
+  async delete(user, id: number) {
+    const posts = await this.postRepository.findOneBy({ id, userId: user.id });
+
+    if (!posts) {
+      throw new NotFoundException('게시글을 찾을 수 없습니다.');
+    }
+
+    return this.postRepository.delete(id);
   }
 }
