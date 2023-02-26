@@ -1,34 +1,25 @@
-import { OmitType } from '@nestjs/swagger';
+import { PickType } from '@nestjs/swagger';
 import { PostEntity } from '../posts.entity';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
 
-export class CreatePostDto extends OmitType(PostEntity, [
-  'viewCount',
-  'shareCount',
-  'selectedAnswer',
-  'isAnswer',
-  'parentPostId',
-  'deleted',
-  'createdAt',
-  'updatedAt',
-  'deletedAt',
-] as const) {
+export class CreatePostDto extends PickType(PostEntity, ['boardId', 'hashtags', 'title', 'content', 'userType', 'parentPostId']) {
   @IsNumber()
-  userId;
+  boardId: number;
 
-  @IsNumber()
-  boardId;
-
-  @IsString()
+  @IsArray()
   @IsOptional()
-  hashtags;
+  hashtags: string[];
 
   @IsString()
-  title;
+  title: string;
 
   @IsString()
-  content;
+  content: string;
 
   @IsString()
-  userType;
+  userType: string;
+
+  @IsNumber()
+  @IsOptional()
+  parentPostId: number;
 }
