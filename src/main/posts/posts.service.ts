@@ -4,13 +4,24 @@ import { PostEntity } from './posts.entity';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostRepository } from './posts.repository';
 import { CurrentUser } from '../../common/decorators/user.decorator';
+import { GetPostsDto } from './dto/get-posts.dto';
 
 @Injectable()
 export class PostsService {
   constructor(private postRepository: PostRepository) {}
 
-  async getPosts() {
-    const posts = await this.postRepository.findAll();
+  async getPosts(getPostDto: GetPostsDto) {
+    const { offset, limit, board_id: boardId } = getPostDto;
+    const posts = await this.postRepository.find({
+      where: {
+        boardId: boardId,
+      },
+      order: {
+        createdAt: 'DESC',
+      },
+      skip: offset,
+      take: limit,
+    });
     return posts;
   }
 

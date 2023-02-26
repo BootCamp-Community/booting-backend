@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Ip, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Ip, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsService } from './posts.service';
@@ -24,8 +24,8 @@ export class PostsController {
     status: 401,
     description: '로그인 실패',
   })
-  async getPosts() {
-    return this.postService.getPosts();
+  async getPosts(@Query() getPostsDto: GetPostsDto) {
+    return this.postService.getPosts(getPostsDto);
   }
 
   @Get(':id')
