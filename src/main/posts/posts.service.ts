@@ -3,7 +3,6 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { PostEntity } from './posts.entity';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostRepository } from './posts.repository';
-import { CurrentUser } from '../../common/decorators/user.decorator';
 import { GetPostsDto } from './dto/get-posts.dto';
 
 @Injectable()
@@ -22,11 +21,20 @@ export class PostsService {
       skip: offset,
       take: limit,
     });
-    return posts;
+
+    return {
+      count: posts.length,
+      posts,
+    };
   }
 
-  async getPostById(id: object) {
-    const posts = await this.postRepository.findOneBy(id);
+  async getPostById(id: number) {
+    const posts = await this.postRepository
+      .createQueryBuilder('p')
+      .select(['p', 'w.nickname', 'w.id'])
+      .innerJoin('p.writer', 'w')
+      .where('p.id = :id', { id })
+      .getOne();
 
     if (!posts) {
       throw new NotFoundException('게시글을 찾을 수 없습니다.');

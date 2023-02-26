@@ -3,7 +3,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsService } from './posts.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetPostsDto } from './dto/get-posts.dto';
 import { PostEntity } from './posts.entity';
 import { CurrentUser } from '../../common/decorators/user.decorator';
@@ -15,7 +15,6 @@ export class PostsController {
 
   @Get()
   @ApiOperation({ summary: '게시글 전체 조회' })
-  @ApiQuery({ type: GetPostsDto })
   @ApiResponse({
     status: 200,
     description: '필터에 해당하는 게시글을 조회한다.',
@@ -30,7 +29,6 @@ export class PostsController {
 
   @Get(':id')
   @ApiOperation({ summary: '게시글 상세 조회' })
-  @ApiQuery({ type: 'id' })
   @ApiResponse({
     status: 200,
     description: '아이디에 해당하는 게시글을 조회한다.',
@@ -39,7 +37,7 @@ export class PostsController {
     status: 403,
     description: '상세 조회 실패',
   })
-  async getPost(@Param() id: object) {
+  async getPost(@Param('id') id: number) {
     return this.postService.getPostById(id);
   }
 
@@ -70,7 +68,9 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('access-token') //JWT 토큰 키 설정
   @ApiOperation({ summary: '게시글 수정' })
-  @ApiQuery({ type: 'id' })
+  @ApiParam({
+    name: 'id',
+  })
   @ApiBody({ type: UpdatePostDto })
   @ApiResponse({
     status: 201,
@@ -90,7 +90,9 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth('access-token') //JWT 토큰 키 설정
   @ApiOperation({ summary: '게시글 삭제' })
-  @ApiQuery({ type: 'id' })
+  @ApiParam({
+    name: 'id',
+  })
   @ApiResponse({
     status: 201,
     description: '아이디에 해당하는 게시글을 삭제한다.',

@@ -5,7 +5,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
+  JoinColumn,
 } from 'typeorm';
+import { PostEntity } from '../posts/posts.entity';
 
 @Entity('USER')
 export class UserEntity {
@@ -68,4 +71,8 @@ export class UserEntity {
     nullable: false,
   })
   lastLoginAt: Date;
+
+  @OneToMany(() => PostEntity, (post) => post.writer)
+  @JoinColumn({ name: 'post_id' })
+  posts: PostEntity[];
 }

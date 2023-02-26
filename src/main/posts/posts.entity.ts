@@ -1,5 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import { UserEntity } from '../users/users.entity';
 
 @Entity('POST')
 export class PostEntity {
@@ -13,14 +23,6 @@ export class PostEntity {
     required: true,
   })
   boardId: number;
-
-  @Column('int', { name: 'user_id', nullable: false })
-  @ApiProperty({
-    example: 1,
-    description: '유저 ID',
-    required: true,
-  })
-  userId: string;
 
   @Column({ type: 'json', name: 'hashtags', nullable: true })
   @ApiProperty({
@@ -135,4 +137,16 @@ export class PostEntity {
   })
   @Column('int', { name: 'parent_post_id', nullable: true, default: null })
   parentPostId: number;
+
+  @Column('int', { name: 'user_id', nullable: false })
+  @ApiProperty({
+    example: 1,
+    description: '유저 ID',
+    required: true,
+  })
+  userId: string;
+
+  @ManyToOne(() => UserEntity, (writer) => writer.posts)
+  @JoinColumn({ name: 'user_id' })
+  writer: UserEntity;
 }
