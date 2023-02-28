@@ -2,11 +2,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
+import { UserEntity } from '../users/users.entity';
 
-@Entity('COMMENTS')
+@Entity('COMMENT')
 export class CommentEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -14,30 +18,36 @@ export class CommentEntity {
   @Column('int', { name: 'post_id', nullable: false })
   postId: number;
 
-  @Column('int', { name: 'author', nullable: false })
-  author: number;
+  @Column('int', { name: 'user_id', nullable: false })
+  userId: number;
 
   @Column('int', { name: 'parent_id', nullable: false })
   parentId: number;
 
-  @Column('int', { name: 'level', nullable: false })
-  level: number;
-
-  @Column('varchar', { name: 'content', length: 255, nullable: true })
+  @Column('text', { name: 'content', nullable: true })
+  @ApiProperty({
+    example: '내용',
+    description: '내용',
+    required: false,
+  })
   content: string;
 
-  @Column('int', { name: 'like', nullable: false, default: 0 })
-  like: number;
+  @Column('int', { name: 'like_count', nullable: false, default: 0 })
+  likeCount: number;
 
-  @Column('int', { name: 'dislike', nullable: false, default: 0 })
-  dislike: number;
+  @Column('int', { name: 'dislike_count', nullable: false, default: 0 })
+  dislikeCount: number;
 
-  @CreateDateColumn({ nullable: false, type: 'timestamptz' })
+  @CreateDateColumn({ name: 'created_at', nullable: false, type: 'timestamptz' })
   createdAt: Date;
 
-  @UpdateDateColumn({ nullable: false, type: 'timestamptz' })
+  @UpdateDateColumn({ name: 'updated_at', nullable: false, type: 'timestamptz' })
   updatedAt: Date;
 
   @Column('int', { nullable: false, default: 0 })
   deleted: number;
+
+  @ManyToOne(() => UserEntity, (writer) => writer.posts)
+  @JoinColumn({ name: 'user_id' })
+  writer: UserEntity;
 }

@@ -16,6 +16,22 @@ export class PostEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column('int', { name: 'user_id', nullable: false })
+  @ApiProperty({
+    example: 1,
+    description: '유저 ID',
+    required: true,
+  })
+  userId: string;
+
+  @Column('varchar', { name: 'user_type', length: 30, nullable: false })
+  @ApiProperty({
+    example: 'nickname',
+    description: '글쓴이 타입(필명 or 실명)',
+    required: true,
+  })
+  userType: string;
+
   @Column('int', { name: 'board_id', nullable: false })
   @ApiProperty({
     example: 1,
@@ -50,14 +66,6 @@ export class PostEntity {
 
   @Column('int', { name: 'view_count', nullable: true, default: 0 })
   viewCount: number;
-
-  @Column('varchar', { name: 'user_type', length: 30, nullable: false })
-  @ApiProperty({
-    example: 'nickname',
-    description: '글쓴이 타입(필명 or 실명)',
-    required: true,
-  })
-  userType: string;
 
   @Column('varchar', { name: 'create_ip', length: 255, nullable: false })
   createIp: string;
@@ -116,6 +124,22 @@ export class PostEntity {
 
   @ApiProperty({
     example: '0',
+    description: '좋아요 수',
+    required: true,
+  })
+  @Column('int', { name: 'like_count', nullable: false, default: 0 })
+  likeCount: number;
+
+  @ApiProperty({
+    example: '0',
+    description: '싫어요 수',
+    required: true,
+  })
+  @Column('int', { name: 'dislike_count', nullable: false, default: 0 })
+  dislikeCount: number;
+
+  @ApiProperty({
+    example: '0',
     description: '채택된 답변인지 여부',
     required: true,
   })
@@ -137,14 +161,6 @@ export class PostEntity {
   })
   @Column('int', { name: 'parent_post_id', nullable: true, default: null })
   parentPostId: number;
-
-  @Column('int', { name: 'user_id', nullable: false })
-  @ApiProperty({
-    example: 1,
-    description: '유저 ID',
-    required: true,
-  })
-  userId: string;
 
   @ManyToOne(() => UserEntity, (writer) => writer.posts)
   @JoinColumn({ name: 'user_id' })

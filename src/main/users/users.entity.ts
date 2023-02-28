@@ -9,6 +9,8 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { PostEntity } from '../posts/posts.entity';
+import { CommentEntity } from '../comments/comments.entity';
+import { VoteEntity } from '../votes/votes.entity';
 
 @Entity('USER')
 export class UserEntity {
@@ -75,4 +77,12 @@ export class UserEntity {
   @OneToMany(() => PostEntity, (post) => post.writer)
   @JoinColumn({ name: 'post_id' })
   posts: PostEntity[];
+
+  @OneToMany(() => CommentEntity, (comment) => comment.writer)
+  @JoinColumn({ name: 'comment_id' })
+  comments: CommentEntity[];
+
+  @OneToMany(() => VoteEntity, (vote) => vote.voter)
+  @JoinColumn({ name: 'vote_id' })
+  votes: VoteEntity[];
 }

@@ -7,6 +7,7 @@ import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, 
 import { GetPostsDto } from './dto/get-posts.dto';
 import { PostEntity } from './posts.entity';
 import { CurrentUser } from '../../common/decorators/user.decorator';
+import { UserEntity } from '../users/users.entity';
 
 @ApiTags('게시글')
 @Controller('posts')
@@ -81,7 +82,7 @@ export class PostsController {
     status: 401,
     description: '게시글 작성 실패',
   })
-  async updatePost(@CurrentUser() user, @Param() param: any, @Body() dto: UpdatePostDto, @Ip() ip) {
+  async updatePost(@CurrentUser() user: UserEntity, @Param() param: any, @Body() dto: UpdatePostDto, @Ip() ip) {
     const { id } = param;
     return this.postService.update(user, id, dto, ip);
   }
