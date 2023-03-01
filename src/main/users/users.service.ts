@@ -46,70 +46,111 @@ export class UsersService {
       throw new BadRequestException('등록된 회원이 아닙니다.');
     }
 
-    const posts = await this.postRepository
-      .createQueryBuilder('p')
-      .select(['p', 'w.nickname', 'w.id'])
-      .innerJoin('p.writer', 'w')
-      .where('p.user_id = :userId', { userId: user.id })
-      .getMany();
-
-    const comments = await this.commentRepository
-      .createQueryBuilder('c')
-      .select(['c', 'w.nickname', 'w.id'])
-      .innerJoin('c.writer', 'w')
-      .where('c.user_id = :userId', { userId: user.id })
-      .getMany();
-
-    const votes = await this.voteRepository
-      .createQueryBuilder('v')
-      .select(['v', 'u.nickname', 'u.id'])
-      .innerJoin('v.voter', 'u')
-      .where('v.user_id = :userId', { userId: user.id })
-      .getMany();
-
-    const likedPostIds = [];
-    const likedCommentIds = [];
-    votes.forEach((v) => {
-      if (v.voteType === 'like') {
-        switch (v.targetType) {
-          case 'posts':
-            likedPostIds.push(v.targetId);
-            break;
-          case 'comments':
-            likedCommentIds.push(v.targetId);
-            break;
-          default:
-            break;
-        }
-      }
-    });
-
-    const likedPosts = await this.postRepository
-      .createQueryBuilder('p')
-      .select(['p', 'w.nickname', 'w.id'])
-      .innerJoin('p.writer', 'w')
-      .where('p.id in (:...likedPostIds)', { likedPostIds })
-      .getMany();
-    const likedComments = await this.commentRepository
-      .createQueryBuilder('c')
-      .select(['c', 'w.nickname', 'w.id'])
-      .innerJoin('c.writer', 'w')
-      .where('c.id in (:...likedCommentIds)', { likedCommentIds })
-      .getMany();
+    const posts = await this.postRepository.getPostsByUserId(user.id);
+    const comments = await this.commentRepository.getCommentsByUserId(user.id);
+    const likedPosts = await this.postRepository.getLikedPostsByUserId(user.id);
+    const likedComments = await this.commentRepository.getLikedCommentsByUserId(user.id);
 
     return {
       user: { ...findUser },
-      usersPosts: {
-        count: posts.length,
-        posts: [...posts],
+      userPosts: {
+        count: posts?.length || 0,
+        posts: posts ? [...posts] : null,
       },
-      usersComments: {
-        count: comments.length,
-        comments: [...comments],
+      userComments: {
+        count: comments?.length || 0,
+        comments: comments ? [...comments] : null,
       },
-      liked: {
-        likedPosts,
-        likedComments,
+      likedPosts: {
+        count: likedPosts?.length || 0,
+        posts: likedPosts ? [...likedPosts] : null,
+      },
+      likedComments: {
+        count: likedComments?.length || 0,
+        comments: likedComments ? [...likedComments] : null,
+      },
+    };
+  }
+
+  async getUserProfileById(userId: number) {
+    const findUser = await this.userRepository.findUserById(userId);
+
+    if (!findUser) {
+      throw new BadRequestException('등록된 회원이 아닙니다.');
+    }
+
+    const posts = await this.postRepository.getPostsByUserId(userId);
+    const comments = await this.commentRepository.getCommentsByUserId(userId);
+
+    return {
+      user: { ...findUser },
+      userPosts: {
+        count: posts?.length || 0,
+        posts: posts ? [...posts] : null,
+      },
+      userComments: {
+        count: comments?.length || 0,
+        comments: comments ? [...comments] : null,
+      },
+    };
+  }
+
+  async getPostsByUser(userId: number) {
+    const findUser = await this.userRepository.findUserById(userId);
+
+    if (!findUser) {
+      throw new BadRequestException('등록된 회원이 아닙니다.');
+    }
+
+    const posts = await this.postRepository.getPostsByUserId(userId);
+    return {
+      count: posts?.length || 0,
+      posts: posts ? posts : null,
+    };
+  }
+
+  async getCommentsByUser(userId: number) {
+    const findUser = await this.userRepository.findUserById(userId);
+
+    if (!findUser) {
+      throw new BadRequestException('등록된 회원이 아닙니다.');
+    }
+
+    const comments = await this.commentRepository.getCommentsByUserId(userId);
+    return {
+      count: comments?.length || 0,
+      comments: comments ? comments : null,
+    };
+  }
+
+  async getLikedPostsByUser(userId: number) {
+    const findUser = await this.userRepository.findUserById(userId);
+
+    if (!findUser) {
+      throw new BadRequestException('등록된 회원이 아닙니다.');
+    }
+    const likedPosts = await this.postRepository.getLikedPostsByUserId(userId);
+
+    return {
+      likedPosts: {
+        count: likedPosts?.length || 0,
+        posts: likedPosts ? [...likedPosts] : null,
+      },
+    };
+  }
+
+  async getLikedCommentsByUser(userId: number) {
+    const findUser = await this.userRepository.findUserById(userId);
+
+    if (!findUser) {
+      throw new BadRequestException('등록된 회원이 아닙니다.');
+    }
+    const likedComments = await this.commentRepository.getLikedCommentsByUserId(userId);
+
+    return {
+      likedComments: {
+        count: likedComments?.length || 0,
+        comments: likedComments ? [...likedComments] : null,
       },
     };
   }

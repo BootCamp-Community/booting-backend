@@ -5,7 +5,6 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { PostRepository } from './posts.repository';
 import { GetPostsDto } from './dto/get-posts.dto';
 import { VoteRepository } from '../votes/votes.repository';
-import { UserEntity } from '../users/users.entity';
 
 @Injectable()
 export class PostsService {
@@ -30,7 +29,17 @@ export class PostsService {
     };
   }
 
-  async getPostById(id: number) {
+  async getPostById(user, id: number) {
+    //TODO : votes를 조인해서 posts 객체 반환시키자
+    // const query = await this.postRepository
+    //   .createQueryBuilder('p')
+    //   .select(['p', 'w.nickname', 'w.id'])
+    //   .innerJoin('p.writer', 'w')
+    //   .where('p.id = :id', { id })
+    //   .getQuery();
+    //
+    // console.log(query);
+
     const post = await this.postRepository
       .createQueryBuilder('p')
       .select(['p', 'w.nickname', 'w.id'])
@@ -44,18 +53,9 @@ export class PostsService {
 
     let vote;
 
-    //TODO: 비회원과 회원의 API Call을 다르게 처리해서, 회원인 경우 좋아요/싫어요 여부를 확인해야한다.
-    let user;
-    console.log(user);
+    // 로그인한 상태로 현재 API가 호출되면 user가 존재하기 때문에 좋아요/싫어요 여부를 확인한다.
     if (user) {
-      vote = await this.voteRepository
-        .createQueryBuilder('v')
-        .select(['v.voteType'])
-        .where(`v.target_id = :targetId and v.target_type = 'posts' and v.user_id = :userId`, {
-          targetId: id,
-          userId: user.id,
-        })
-        .getOne();
+      vote = await this.voteRepository.getVoteTypeByTargetIdAndUserId(id, 'posts', user.id);
     }
 
     return {

@@ -8,6 +8,7 @@ import { GetPostsDto } from './dto/get-posts.dto';
 import { PostEntity } from './posts.entity';
 import { CurrentUser } from '../../common/decorators/user.decorator';
 import { UserEntity } from '../users/users.entity';
+import { PublicAuthGuard } from '../auth/jwt/public.guard';
 
 @ApiTags('게시글')
 @Controller('posts')
@@ -38,8 +39,9 @@ export class PostsController {
     status: 403,
     description: '상세 조회 실패',
   })
-  async getPost(@Param('id') id: number) {
-    return this.postService.getPostById(id);
+  @UseGuards(PublicAuthGuard)
+  async getPost(@CurrentUser() user, @Param('id') id: number) {
+    return this.postService.getPostById(user, id);
   }
 
   @Post()
@@ -82,8 +84,8 @@ export class PostsController {
     status: 401,
     description: '게시글 작성 실패',
   })
-  async updatePost(@CurrentUser() user: UserEntity, @Param() param: any, @Body() dto: UpdatePostDto, @Ip() ip) {
-    const { id } = param;
+  async updatePost(@CurrentUser() user: UserEntity, @Param() param, @Body() dto: UpdatePostDto, @Ip() ip) {
+    const { id }: { id: number } = param;
     return this.postService.update(user, id, dto, ip);
   }
 

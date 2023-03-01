@@ -1,10 +1,4 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Post,
-  Response,
-} from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post, Response } from '@nestjs/common';
 import { ResponseTokenDto } from './dto/response-dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';

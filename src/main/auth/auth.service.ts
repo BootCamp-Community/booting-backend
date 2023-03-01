@@ -6,6 +6,7 @@ import { UserEntity } from 'src/main/users/users.entity';
 import { UsersService } from 'src/main/users/users.service';
 import { AppleLoginDto, GithubLoginDto, KakaoLoginDto, NaverLoginDto } from './dto/login-dto';
 import { Payload } from './jwt/jwt.payload';
+import { ExtractJwt } from 'passport-jwt';
 
 @Injectable()
 export class AuthService {
@@ -205,9 +206,19 @@ export class AuthService {
     throw new UnauthorizedException('로그인에 실패하였습니다.');
   }
 
-  async tokenValidateUser(payload: Payload): Promise<UserEntity | undefined> {
+  async tokenPayLoadValidateUser(payload: Payload): Promise<UserEntity | undefined> {
     return await this.usersService.findByFields({
       where: { id: payload.id },
     });
+  }
+
+  validateToken(token: string): boolean | Payload {
+    try {
+      const payload = this.jwtService.verify(token, { ignoreExpiration: true });
+      return payload;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
   }
 }
