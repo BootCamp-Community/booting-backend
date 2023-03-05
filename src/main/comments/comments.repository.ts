@@ -25,7 +25,7 @@ export class CommentRepository extends Repository<CommentEntity> {
   async getLikedCommentsByUserId(userId) {
     return this.createQueryBuilder('c')
       .select(['c', 'w.nickname', 'w.id'])
-      .innerJoin(VoteEntity, 'v', `c.id = v.target_id and v.target_type = 'comments' and v.vote_type = 'like'`)
+      .innerJoin(VoteEntity, 'v', `c.id = v.target_id and v.target_type = 'comment' and v.vote_type = 'like'`)
       .innerJoin('c.writer', 'w')
       .where(`c.user_id = :userId`, {
         userId,

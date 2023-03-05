@@ -1,5 +1,5 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 import { CurrentUser } from '../../common/decorators/user.decorator';
@@ -10,12 +10,13 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get('my-profile')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '마이 프로필 조회' })
   @ApiResponse({
     status: 200,
     description: '마이 프로필을 조회한다.',
   })
-  @UseGuards(JwtAuthGuard)
   async getMyProfile(@CurrentUser() user) {
     return this.usersService.getMyProfile(user);
   }
@@ -26,8 +27,8 @@ export class UsersController {
     status: 200,
     description: '회원 프로필을 조회한다.',
   })
-  async getUserProfile(@Param() param) {
-    const { userId }: { userId: number } = param;
+  @ApiParam({ name: 'userId' })
+  async getUserProfile(@Param('userId') userId: number) {
     return this.usersService.getUserProfileById(userId);
   }
 
@@ -37,8 +38,8 @@ export class UsersController {
     status: 200,
     description: '회원이 작성한 글 목록을 조회한다.',
   })
-  async getPostsByUser(@Param() param) {
-    const { userId }: { userId: number } = param;
+  @ApiParam({ name: 'userId' })
+  async getPostsByUser(@Param('userId') userId: number) {
     return this.usersService.getPostsByUser(userId);
   }
 
@@ -48,8 +49,8 @@ export class UsersController {
     status: 200,
     description: '회원이 작성한 댓글을 조회한다.',
   })
-  async getCommentsByUser(@Param() param) {
-    const { userId }: { userId: number } = param;
+  @ApiParam({ name: 'userId' })
+  async getCommentsByUser(@Param('userId') userId: number) {
     return this.usersService.getCommentsByUser(userId);
   }
 
@@ -59,8 +60,8 @@ export class UsersController {
     status: 200,
     description: '회원이 좋아요한 글 목록을 조회한다.',
   })
-  async getLikedPostsByUser(@Param() param) {
-    const { userId }: { userId: number } = param;
+  @ApiParam({ name: 'userId' })
+  async getLikedPostsByUser(@Param('userId') userId: number) {
     return this.usersService.getLikedPostsByUser(userId);
   }
 
@@ -70,8 +71,8 @@ export class UsersController {
     status: 200,
     description: '회원이 좋아요한 댓글을 조회한다.',
   })
-  async getLikedCommentsByUser(@Param() param) {
-    const { userId }: { userId: number } = param;
+  @ApiParam({ name: 'userId' })
+  async getLikedCommentsByUser(@Param('userId') userId: number) {
     return this.usersService.getLikedCommentsByUser(userId);
   }
 }

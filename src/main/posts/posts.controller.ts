@@ -69,7 +69,7 @@ export class PostsController {
 
   @Put(':id')
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('access-token') //JWT 토큰 키 설정
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '게시글 수정' })
   @ApiParam({
     name: 'id',

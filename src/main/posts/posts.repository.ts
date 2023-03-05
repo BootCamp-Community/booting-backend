@@ -26,7 +26,7 @@ export class PostRepository extends Repository<PostEntity> {
   async getLikedPostsByUserId(userId) {
     return this.createQueryBuilder('p')
       .select(['p', 'w.nickname', 'w.id'])
-      .innerJoin(VoteEntity, 'v', `p.id = v.target_id and v.target_type = 'posts' and v.vote_type = 'like'`)
+      .innerJoin(VoteEntity, 'v', `p.id = v.target_id and v.target_type = 'post' and v.vote_type = 'like'`)
       .innerJoin('p.writer', 'w')
       .where(`p.user_id = :userId`, {
         userId,

@@ -3,13 +3,18 @@ import { JwtAuthGuard } from '../auth/jwt/jwt.guard';
 import { CurrentUser } from '../../common/decorators/user.decorator';
 import { VotesService } from './votes.service';
 import { targetType, validateTargetType } from './votes.interface';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('좋아요, 싫어요')
 @Controller('votes')
 export class VotesController {
   constructor(private votesService: VotesService) {}
 
   @Post('/:targetType/:targetId/like')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '좋아요' })
+  @ApiParam({ name: 'targetType', enum: ['post', 'comment'] })
   async createLike(
     @CurrentUser() user,
     @Param('targetType') targetType: targetType,
@@ -21,6 +26,9 @@ export class VotesController {
 
   @Delete('/:targetType/:targetId/like')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '좋아요 취소' })
+  @ApiParam({ name: 'targetType', enum: ['post', 'comment'] })
   async deleteLike(
     @CurrentUser() user,
     @Param('targetType') targetType: targetType,
@@ -32,6 +40,9 @@ export class VotesController {
 
   @Post('/:targetType/:targetId/dislike')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '싫어요' })
+  @ApiParam({ name: 'targetType', enum: ['post', 'comment'] })
   async createDislike(
     @CurrentUser() user,
     @Param('targetType') targetType: targetType,
@@ -43,6 +54,9 @@ export class VotesController {
 
   @Delete('/:targetType/:targetId/dislike')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: '싫어요 취소' })
+  @ApiParam({ name: 'targetType', enum: ['post', 'comment'] })
   async deleteDislike(
     @CurrentUser() user,
     @Param('targetType') targetType: targetType,
