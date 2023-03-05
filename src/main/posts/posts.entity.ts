@@ -6,10 +6,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from '../users/users.entity';
+import { VoteEntity } from '../votes/votes.entity';
+import { CommentEntity } from '../comments/comments.entity';
 
 @Entity('POST')
 export class PostEntity {
@@ -165,4 +168,8 @@ export class PostEntity {
   @ManyToOne(() => UserEntity, (writer) => writer.posts)
   @JoinColumn({ name: 'user_id' })
   writer: UserEntity;
+
+  @OneToMany(() => CommentEntity, (comment) => comment.post)
+  @JoinColumn({ name: 'comment_id' })
+  comments: CommentEntity[];
 }

@@ -10,8 +10,6 @@ import { DatabaseModule } from './configs/database.module';
 import { ReportsModule } from './main/reports/reports.module';
 import { AuthModule } from './main/auth/auth.module';
 import { VotesModule } from './main/votes/votes.module';
-import { VotesController } from './main/votes/votes.controller';
-import { VotesService } from './main/votes/votes.service';
 
 @Module({
   imports: [
@@ -26,7 +24,7 @@ import { VotesService } from './main/votes/votes.service';
     AuthModule,
     VotesModule,
   ],
-  controllers: [VotesController],
-  providers: [VotesService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

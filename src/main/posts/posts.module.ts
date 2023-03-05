@@ -12,8 +12,7 @@ import { VoteRepository } from '../votes/votes.repository';
 @Module({
   imports: [
     TypeOrmModule.forFeature([PostEntity]),
-    TypeOrmExModule.forCustomRepository([PostRepository]),
-    TypeOrmExModule.forCustomRepository([VoteRepository]),
+    TypeOrmExModule.forCustomRepository([PostRepository, VoteRepository]),
     AuthModule,
   ],
   providers: [ConfigService, PostsService],

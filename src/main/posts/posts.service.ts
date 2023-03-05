@@ -30,16 +30,6 @@ export class PostsService {
   }
 
   async getPostById(user, id: number) {
-    //TODO : votes를 조인해서 posts 객체 반환시키자
-    // const query = await this.postRepository
-    //   .createQueryBuilder('p')
-    //   .select(['p', 'w.nickname', 'w.id'])
-    //   .innerJoin('p.writer', 'w')
-    //   .where('p.id = :id', { id })
-    //   .getQuery();
-    //
-    // console.log(query);
-
     const post = await this.postRepository
       .createQueryBuilder('p')
       .select(['p', 'w.nickname', 'w.id'])
@@ -55,7 +45,7 @@ export class PostsService {
 
     // 로그인한 상태로 현재 API가 호출되면 user가 존재하기 때문에 좋아요/싫어요 여부를 확인한다.
     if (user) {
-      vote = await this.voteRepository.getVoteTypeByTargetIdAndUserId(id, 'posts', user.id);
+      vote = await this.voteRepository.getVoteTypeByTargetIdAndUserId(id, 'post', user.id);
     }
 
     return {
