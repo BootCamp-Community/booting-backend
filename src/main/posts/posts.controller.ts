@@ -17,28 +17,12 @@ export class PostsController {
 
   @Get()
   @ApiOperation({ summary: '게시글 전체 조회' })
-  @ApiResponse({
-    status: 200,
-    description: '필터에 해당하는 게시글을 조회한다.',
-  })
-  @ApiResponse({
-    status: 401,
-    description: '로그인 실패',
-  })
   async getPosts(@Query() getPostsDto: GetPostsDto) {
     return this.postService.getPosts(getPostsDto);
   }
 
   @Get(':id')
   @ApiOperation({ summary: '게시글 상세 조회' })
-  @ApiResponse({
-    status: 200,
-    description: '아이디에 해당하는 게시글을 조회한다.',
-  })
-  @ApiResponse({
-    status: 403,
-    description: '상세 조회 실패',
-  })
   @UseGuards(PublicAuthGuard)
   async getPost(@CurrentUser() user, @Param('id') id: number) {
     return this.postService.getPostById(user, id);
@@ -46,7 +30,7 @@ export class PostsController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth('access-token') //JWT 토큰 키 설정
+  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: '게시글 작성' })
   @ApiBody({ type: CreatePostDto })
   @ApiResponse({
@@ -57,10 +41,6 @@ export class PostsController {
         id: '1',
       },
     },
-  })
-  @ApiResponse({
-    status: 401,
-    description: '게시글 작성 실패',
   })
   async createPost(@CurrentUser() user, @Body() dto: CreatePostDto, @Ip() ip): Promise<PostEntity> {
     const created = await this.postService.create(user, dto, ip);
@@ -75,17 +55,7 @@ export class PostsController {
     name: 'id',
   })
   @ApiBody({ type: UpdatePostDto })
-  @ApiResponse({
-    status: 201,
-    description: '아이디에 해당하는 게시글을 수정한다.',
-    type: UpdatePostDto,
-  })
-  @ApiResponse({
-    status: 401,
-    description: '게시글 작성 실패',
-  })
-  async updatePost(@CurrentUser() user: UserEntity, @Param() param, @Body() dto: UpdatePostDto, @Ip() ip) {
-    const { id }: { id: number } = param;
+  async updatePost(@CurrentUser() user: UserEntity, @Param('id') id: number, @Body() dto: UpdatePostDto, @Ip() ip) {
     return this.postService.update(user, id, dto, ip);
   }
 
@@ -96,12 +66,7 @@ export class PostsController {
   @ApiParam({
     name: 'id',
   })
-  @ApiResponse({
-    status: 201,
-    description: '아이디에 해당하는 게시글을 삭제한다.',
-  })
-  async deletePost(@CurrentUser() user, @Param() param: any) {
-    const { id } = param;
+  async deletePost(@CurrentUser() user, @Param('id') id: number) {
     return this.postService.delete(user, id);
   }
 }

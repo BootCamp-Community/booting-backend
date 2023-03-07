@@ -45,7 +45,7 @@ export class PostEntity {
 
   @Column({ type: 'json', name: 'hashtags', nullable: true })
   @ApiProperty({
-    example: '해쉬태그',
+    example: ['해쉬태그1', '해쉬태그2'],
     description: '해쉬태그',
     required: false,
   })
@@ -146,16 +146,16 @@ export class PostEntity {
     description: '채택된 답변인지 여부',
     required: true,
   })
-  @Column('int', { name: 'selected_answer', nullable: false, default: 0 })
-  selectedAnswer: number;
+  @Column('boolean', { name: 'selected_answer', nullable: false, default: false })
+  selectedAnswer: boolean;
 
   @ApiProperty({
-    example: '0',
+    example: true,
     description: '답글인지 여부',
     required: true,
   })
-  @Column('int', { name: 'is_answer', nullable: false, default: 0 })
-  isAnswer: number;
+  @Column('boolean', { name: 'is_answer', nullable: false, default: false })
+  isAnswer: boolean;
 
   @ApiProperty({
     example: '0',

@@ -42,7 +42,6 @@ export class PostsService {
     }
 
     let vote;
-
     // 로그인한 상태로 현재 API가 호출되면 user가 존재하기 때문에 좋아요/싫어요 여부를 확인한다.
     if (user) {
       vote = await this.voteRepository.getVoteTypeByTargetIdAndUserId(id, 'post', user.id);

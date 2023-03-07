@@ -10,7 +10,6 @@ import {
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserEntity } from '../users/users.entity';
-import { VoteEntity } from '../votes/votes.entity';
 import { PostEntity } from '../posts/posts.entity';
 
 @Entity('COMMENT')
@@ -19,19 +18,32 @@ export class CommentEntity {
   id: number;
 
   @Column('int', { name: 'post_id', nullable: false })
+  @ApiProperty({
+    example: 162,
+    description: '게시글 ID',
+    required: true,
+  })
   postId: number;
 
   @Column('int', { name: 'user_id', nullable: false })
   userId: number;
 
-  @Column('int', { name: 'parent_id', nullable: true })
+  @Column('int', { name: 'parent_id', nullable: true, default: null })
+  @ApiProperty({
+    example: 1,
+    description: '서브 댓글인 경우 부모 댓글의 ID',
+    required: false,
+  })
   parentId: number;
+
+  @Column('boolean', { name: 'is_parent', nullable: false, default: false })
+  isParent: boolean;
 
   @Column('text', { name: 'content', nullable: true })
   @ApiProperty({
     example: '내용',
     description: '내용',
-    required: false,
+    required: true,
   })
   content: string;
 
@@ -47,8 +59,11 @@ export class CommentEntity {
   @UpdateDateColumn({ name: 'updated_at', nullable: false, type: 'timestamptz' })
   updatedAt: Date;
 
-  @Column('int', { nullable: false, default: 0 })
-  deleted: number;
+  @Column('varchar', { name: 'create_ip', length: 255, nullable: false })
+  createIp: string;
+
+  @Column('boolean', { nullable: false, default: false })
+  deleted: boolean;
 
   @ManyToOne(() => UserEntity, (writer) => writer.posts)
   @JoinColumn({ name: 'user_id' })

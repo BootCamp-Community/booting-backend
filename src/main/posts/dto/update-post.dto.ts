@@ -2,7 +2,14 @@ import { PickType } from '@nestjs/swagger';
 import { PostEntity } from '../posts.entity';
 import { IsArray, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
 
-export class UpdatePostDto extends PickType(PostEntity, ['boardId', 'hashtags', 'title', 'content', 'userType', 'parentPostId']) {
+export class UpdatePostDto extends PickType(PostEntity, [
+  'boardId',
+  'hashtags',
+  'title',
+  'content',
+  'userType',
+  'parentPostId',
+]) {
   @IsNumber()
   boardId: number;
 
