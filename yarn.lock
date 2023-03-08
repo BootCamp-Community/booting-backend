@@ -624,6 +624,11 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@lukeed/csprng@^1.0.0":
+  "integrity" "sha512-uSvJdwQU5nK+Vdf6zxcWAY2A8r7uqe+gePwLWzJ+fsQehq18pc0I2hJKwypZ2aLM90+Er9u1xn4iLJPZ+xlL4g=="
+  "resolved" "https://registry.npmjs.org/@lukeed/csprng/-/csprng-1.0.1.tgz"
+  "version" "1.0.1"
+
 "@nestjs/cli@^9.0.0":
   "integrity" "sha512-xT5uOoIEcaB/Fn6UeF7atfKqKiEEsTeRKPiM55p+e5H9WVw8FC2r4ceZgaINJbsw0QWskVj/ZQadMo6dA6hXxw=="
   "resolved" "https://registry.npmjs.org/@nestjs/cli/-/cli-9.0.0.tgz"
@@ -671,18 +676,17 @@
     "lodash" "4.17.21"
     "uuid" "8.3.2"
 
-"@nestjs/core@^8.0.0 || ^9.0.0", "@nestjs/core@^9.0.0":
-  "integrity" "sha512-Ib25JrYQf5ICro19FBytoMpMQicanC4HG3goPBSqsolu+AhVzSU0OhDwmmiDy3aHgmheFnNEEdUH+Gh5Rm2cNw=="
-  "resolved" "https://registry.npmjs.org/@nestjs/core/-/core-9.0.0.tgz"
-  "version" "9.0.0"
+"@nestjs/core@^8.0.0 || ^9.0.0", "@nestjs/core@^9.0.0", "@nestjs/core@^9.3.9":
+  "integrity" "sha512-9g1A1G9eirLXEpH21rc6dKb08zHc2+adhCRz8NW39hbejcsxxD72FApJzt4QBQAKvu862ixt/tdpStnFT7lOSw=="
+  "resolved" "https://registry.npmjs.org/@nestjs/core/-/core-9.3.9.tgz"
+  "version" "9.3.9"
   dependencies:
     "@nuxtjs/opencollective" "0.3.2"
     "fast-safe-stringify" "2.1.1"
     "iterare" "1.2.1"
-    "object-hash" "3.0.0"
     "path-to-regexp" "3.2.0"
-    "tslib" "2.4.0"
-    "uuid" "8.3.2"
+    "tslib" "2.5.0"
+    "uid" "2.0.1"
 
 "@nestjs/jwt@^9.0.0":
   "integrity" "sha512-ZsXGY/wMYKzEhymw2+dxiwrHTRKIKrGszx6r2EjQqNLypdXMQu0QrujwZJ8k3+XQV4snmuJwwNakQoA2ILfq8w=="
@@ -735,12 +739,12 @@
     "path-to-regexp" "3.2.0"
     "swagger-ui-dist" "4.15.5"
 
-"@nestjs/testing@^9.0.0":
-  "integrity" "sha512-lBBzZvJWaYutYC1wOEKf4KOis/wxudBX0pVLZxzHmtbkeC2EQgQCbyKA88m1R9QeYTt9CmVMg4eyb+WeOADZiQ=="
-  "resolved" "https://registry.npmjs.org/@nestjs/testing/-/testing-9.0.0.tgz"
-  "version" "9.0.0"
+"@nestjs/testing@^9.3.9":
+  "integrity" "sha512-+mPvSVvSC2SAkYgZZv1mOI2xsdGc1pmq7/sem7iin/JDoFtlvoGSK+pfZHD3IV3EpYtq1v/8/5gi+UFH9yZnDg=="
+  "resolved" "https://registry.npmjs.org/@nestjs/testing/-/testing-9.3.9.tgz"
+  "version" "9.3.9"
   dependencies:
-    "tslib" "2.4.0"
+    "tslib" "2.5.0"
 
 "@nestjs/typeorm@^9.0.1":
   "integrity" "sha512-A2BgLIPsMtmMI0bPKEf4bmzgFPsnvHqNBx3KkvaJ7hJrBQy0OqYOb+Rr06ifblKWDWS2tUPNrAFQbZjtk3PI+g=="
@@ -3837,11 +3841,6 @@
   "resolved" "https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz"
   "version" "4.1.1"
 
-"object-hash@3.0.0":
-  "integrity" "sha512-RSn9F68PjH9HqtltsSnqYC1XXoWe9Bju5+213R98cNGttag9q9yAOTzdbsqvIa7aNm5WffBZFpWYr2aWrklWAw=="
-  "resolved" "https://registry.npmjs.org/object-hash/-/object-hash-3.0.0.tgz"
-  "version" "3.0.0"
-
 "object-inspect@^1.9.0":
   "integrity" "sha512-z+cPxW0QGUp0mcqcsgQyLVRDoXFQbXOwBaqyF7VIgI4TWNQsDHrBpUQslRmIfAoYWdYzs6UlKJtB2XJpTaNSpQ=="
   "resolved" "https://registry.npmjs.org/object-inspect/-/object-inspect-1.12.2.tgz"
@@ -4951,6 +4950,11 @@
   "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.4.0.tgz"
   "version" "2.4.0"
 
+"tslib@2.5.0":
+  "integrity" "sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg=="
+  "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.5.0.tgz"
+  "version" "2.5.0"
+
 "tsutils@^3.21.0":
   "integrity" "sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA=="
   "resolved" "https://registry.npmjs.org/tsutils/-/tsutils-3.21.0.tgz"
@@ -5020,6 +5024,13 @@
   "integrity" "sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ=="
   "resolved" "https://registry.npmjs.org/typescript/-/typescript-4.7.4.tgz"
   "version" "4.7.4"
+
+"uid@2.0.1":
+  "integrity" "sha512-PF+1AnZgycpAIEmNtjxGBVmKbZAQguaa4pBUq6KNaGEcpzZ2klCNZLM34tsjp76maN00TttiiUf6zkIBpJQm2A=="
+  "resolved" "https://registry.npmjs.org/uid/-/uid-2.0.1.tgz"
+  "version" "2.0.1"
+  dependencies:
+    "@lukeed/csprng" "^1.0.0"
 
 "universalify@^2.0.0":
   "integrity" "sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ=="

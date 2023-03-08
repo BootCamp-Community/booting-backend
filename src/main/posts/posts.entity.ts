@@ -11,7 +11,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from '../users/users.entity';
-import { VoteEntity } from '../votes/votes.entity';
 import { CommentEntity } from '../comments/comments.entity';
 
 @Entity('POST')
