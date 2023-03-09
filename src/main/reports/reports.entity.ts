@@ -1,18 +1,16 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { targetType } from './reports.interface';
 
-@Entity('REPORTS')
+@Entity('REPORT')
 export class ReportEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column('int', { name: 'post_id', nullable: false })
-  postId: number;
+  @Column('varchar', { name: 'target_type', length: 10, nullable: false })
+  targetType: targetType;
+
+  @Column('int', { name: 'target_id', nullable: false })
+  targetId: number;
 
   @Column('int', { name: 'reporter_id', nullable: false })
   reporterId: number;
@@ -20,11 +18,14 @@ export class ReportEntity {
   @Column('varchar', { name: 'reason', length: 255, nullable: false })
   reason: string;
 
-  @Column('int', { name: 'is_execute', nullable: false, default: 0 })
-  isExecute: number;
+  @Column('boolean', { name: 'is_execute', nullable: false, default: false })
+  isExecute: boolean;
 
-  @Column('varchar', { name: 'executor', length: 255, nullable: true })
-  executor: string;
+  @Column('int', { name: 'executor_id', nullable: true, default: null })
+  executorId: string;
+
+  @Column('varchar', { name: 'execute_reason', length: 255, nullable: true, default: null })
+  executeReason: string;
 
   @CreateDateColumn({
     name: 'created_at',
@@ -33,10 +34,22 @@ export class ReportEntity {
   })
   createdAt: Date;
 
+  @Column({ nullable: true })
   @UpdateDateColumn({
     name: 'executed_at',
     type: 'timestamptz',
-    nullable: false,
+    nullable: true,
   })
   executedAt: Date;
+
+  static from(item) {
+    const report = new ReportEntity();
+
+    report.targetId = item.targetId;
+    report.targetType = item.targetType;
+    report.reporterId = item.reporterId;
+    report.reason = item.reason;
+
+    return report;
+  }
 }
