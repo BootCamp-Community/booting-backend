@@ -24,7 +24,7 @@ describe('PostsService', () => {
     repository = moduleRef.get<Repository<PostEntity>>(getRepositoryToken(PostRepository));
   });
 
-  it('게시글 ID에 해당하는 게시글의 정보를 가져와야 한다.', () => {
+  it('게시글 ID에 해당하는 게시글의 정보를 가져와야 한다. test', () => {
     expect(2 + 2).toBe(4);
   });
 });
