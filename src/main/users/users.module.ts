@@ -13,10 +13,7 @@ import { UserRepository } from './users.repository';
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
-    TypeOrmExModule.forCustomRepository([PostRepository]),
-    TypeOrmExModule.forCustomRepository([CommentRepository]),
-    TypeOrmExModule.forCustomRepository([VoteRepository]),
-    TypeOrmExModule.forCustomRepository([UserRepository]),
+    TypeOrmExModule.forCustomRepository([PostRepository, CommentRepository, VoteRepository, UserRepository]),
   ],
   providers: [ConfigService, UsersService],
   controllers: [UsersController],

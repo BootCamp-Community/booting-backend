@@ -17,8 +17,9 @@ export class PostsController {
 
   @Get()
   @ApiOperation({ summary: '게시글 전체 조회' })
-  async getPosts(@Query() getPostsDto: GetPostsDto) {
-    return this.postService.getPosts(getPostsDto);
+  @UseGuards(PublicAuthGuard)
+  async getPosts(@CurrentUser() user, @Query() getPostsDto: GetPostsDto) {
+    return this.postService.getPosts(user, getPostsDto);
   }
 
   @Get(':id')

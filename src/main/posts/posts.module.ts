@@ -8,11 +8,12 @@ import { TypeOrmExModule } from '../../configs/typeorm-ex.module';
 import { PostRepository } from './posts.repository';
 import { AuthModule } from '../auth/auth.module';
 import { VoteRepository } from '../votes/votes.repository';
+import { BlockUserRepository } from '../block-users/block-users.repository';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([PostEntity]),
-    TypeOrmExModule.forCustomRepository([PostRepository, VoteRepository]),
+    TypeOrmExModule.forCustomRepository([PostRepository, VoteRepository, BlockUserRepository]),
     AuthModule,
   ],
   providers: [ConfigService, PostsService],

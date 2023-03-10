@@ -24,7 +24,7 @@ export class PostEntity {
     description: '유저 ID',
     required: true,
   })
-  userId: string;
+  userId: number;
 
   @Column('varchar', { name: 'user_type', length: 30, nullable: false })
   @ApiProperty({
@@ -77,15 +77,15 @@ export class PostEntity {
     description: '삭제 여부',
     required: true,
   })
-  @Column('int', { name: 'deleted', nullable: true, default: 0 })
-  deleted: number;
+  @Column('boolean', { name: 'deleted', nullable: true, default: false })
+  deleted: boolean;
 
   @ApiProperty({
     example: '2022-12-27 12:55:32.679158 +00:00',
     description: '삭제 시각',
     required: true,
   })
-  @DeleteDateColumn({
+  @Column({
     name: 'deleted_at',
     type: 'timestamptz',
     nullable: true,
@@ -155,6 +155,14 @@ export class PostEntity {
   })
   @Column('boolean', { name: 'is_answer', nullable: false, default: false })
   isAnswer: boolean;
+
+  @ApiProperty({
+    example: true,
+    description: '댓글이 달리면 알람을 받을건지 여부',
+    required: true,
+  })
+  @Column('boolean', { name: 'is_alarm', nullable: false, default: true })
+  isAlarm: boolean;
 
   @ApiProperty({
     example: '0',

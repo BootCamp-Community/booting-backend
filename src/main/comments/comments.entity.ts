@@ -64,6 +64,9 @@ export class CommentEntity {
   @Column('boolean', { nullable: false, default: false })
   deleted: boolean;
 
+  @Column({ name: 'deleted_at', nullable: true, type: 'timestamptz' })
+  deletedAt: Date;
+
   @ManyToOne(() => UserEntity, (writer) => writer.posts)
   @JoinColumn({ name: 'user_id' })
   writer: UserEntity;
@@ -71,4 +74,19 @@ export class CommentEntity {
   @ManyToOne(() => PostEntity, (post) => post.comments)
   @JoinColumn({ name: 'post_id' })
   post: PostEntity;
+
+  static from({ userId, createIp, content, parentId, postId }) {
+    const comment = new CommentEntity();
+
+    comment.postId = postId;
+    comment.content = content;
+    comment.userId = userId;
+    comment.createIp = createIp;
+    comment.parentId = parentId;
+
+    if (!parentId) {
+      comment.isParent = true;
+    }
+    return comment;
+  }
 }

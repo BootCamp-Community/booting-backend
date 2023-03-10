@@ -10,6 +10,8 @@ import { DatabaseModule } from './configs/database.module';
 import { ReportsModule } from './main/reports/reports.module';
 import { AuthModule } from './main/auth/auth.module';
 import { VotesModule } from './main/votes/votes.module';
+import { PostRepository } from './main/posts/posts.repository';
+import { BlockUsersModule } from './main/block-users/block-users.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { VotesModule } from './main/votes/votes.module';
     ReportsModule,
     AuthModule,
     VotesModule,
+    PostRepository,
+    BlockUsersModule,
   ],
   controllers: [],
   providers: [],

@@ -1,10 +1,4 @@
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity('NOTIFICATION')
 export class NotificationEntity {
@@ -17,11 +11,17 @@ export class NotificationEntity {
   @Column('int', { name: 'sender_id', nullable: false })
   senderId: number;
 
-  @Column('int', { name: 'is_read', nullable: false, default: 0 })
-  isRead: number;
+  @Column('boolean', { name: 'is_read', nullable: false, default: false })
+  isRead: boolean;
 
-  @Column('varchar', { name: 'message', length: 255, nullable: false })
-  message: string;
+  @Column('varchar', { name: 'photo', length: 255, nullable: false })
+  photo: string;
+
+  @Column('varchar', { name: 'title', length: 255, nullable: false })
+  title: string;
+
+  @Column('varchar', { name: 'content', length: 255, nullable: false })
+  content: string;
 
   @Column('int', { name: 'is_push', nullable: false })
   isPush: number;
@@ -39,4 +39,18 @@ export class NotificationEntity {
     nullable: false,
   })
   readAt: Date;
+
+  static from({ receiverId, senderId, photo = 'normal', title, content, isPush }): NotificationEntity {
+    const notification = new NotificationEntity();
+
+    notification.receiverId = receiverId;
+    notification.senderId = senderId;
+    notification.photo = photo;
+    notification.title = title;
+    notification.content = content;
+    notification.isRead = false;
+    notification.isPush = isPush;
+
+    return notification;
+  }
 }

@@ -9,11 +9,12 @@ import { CommentEntity } from './comments.entity';
 import { CommentRepository } from './comments.repository';
 import { VoteRepository } from '../votes/votes.repository';
 import { PostRepository } from '../posts/posts.repository';
+import { BlockUserRepository } from '../block-users/block-users.repository';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([CommentEntity]),
-    TypeOrmExModule.forCustomRepository([CommentRepository, PostRepository, VoteRepository]),
+    TypeOrmExModule.forCustomRepository([CommentRepository, PostRepository, VoteRepository, BlockUserRepository]),
     AuthModule,
   ],
   providers: [ConfigService, CommentsService],

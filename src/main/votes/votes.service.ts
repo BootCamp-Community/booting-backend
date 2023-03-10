@@ -162,7 +162,7 @@ export class VotesService {
     try {
       const findVote = await this.voteRepository.getVoteTypeByTargetIdAndUserId(targetId, targetType, user.id);
       if (findVote?.voteType === 'dislike') {
-        throw new BadRequestException('이미 좋아요를 눌렀습니다.');
+        throw new BadRequestException('이미 싫어요를 눌렀습니다.');
       } else if (findVote?.voteType === 'like') {
         // 좋아요가 눌려있다면 삭제하고 싫어요로 변경한다.
         target.likeCount = Math.max(0, target.likeCount - 1);
