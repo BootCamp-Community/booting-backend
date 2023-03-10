@@ -16,15 +16,15 @@ export class PostsController {
   constructor(private postService: PostsService) {}
 
   @Get()
-  @ApiOperation({ summary: '게시글 전체 조회' })
   @UseGuards(PublicAuthGuard)
+  @ApiOperation({ summary: '게시글 전체 조회' })
   async getPosts(@CurrentUser() user, @Query() getPostsDto: GetPostsDto) {
     return this.postService.getPosts(user, getPostsDto);
   }
 
   @Get(':id')
-  @ApiOperation({ summary: '게시글 상세 조회' })
   @UseGuards(PublicAuthGuard)
+  @ApiOperation({ summary: '게시글 상세 조회' })
   async getPost(@CurrentUser() user, @Param('id') id: number) {
     return this.postService.getPostById(user, id);
   }
