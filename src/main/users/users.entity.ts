@@ -41,6 +41,9 @@ export class UserEntity {
   @Column('varchar', { name: 'nickname', length: 50, nullable: false })
   nickname: string;
 
+  @Column('json', { name: 'roles', nullable: false, default: '["user"]' })
+  roles: string[];
+
   @Column('varchar', {
     name: 'photo',
     length: 255,
