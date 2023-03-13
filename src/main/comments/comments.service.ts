@@ -6,8 +6,6 @@ import { CommentRepository } from './comments.repository';
 import { VoteRepository } from '../votes/votes.repository';
 import { PostRepository } from '../posts/posts.repository';
 import { DataSource } from 'typeorm';
-import { query } from 'express';
-import { Notification } from 'rxjs';
 import { NotificationEntity } from '../notifications/notifications.entity';
 import { CommentEntity } from './comments.entity';
 import { BlockUserRepository } from '../block-users/block-users.repository';
